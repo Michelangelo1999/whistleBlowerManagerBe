@@ -3,7 +3,10 @@ package com.whistleblowermanagerbe.dto;
 import com.whistleblowermanagerbe.model.Allegato;
 import com.whistleblowermanagerbe.model.DatiUtente;
 import com.whistleblowermanagerbe.model.SoggettoCoinvolto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -11,6 +14,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SegnalazioneDto {
 
     private Integer id;
@@ -25,7 +31,7 @@ public class SegnalazioneDto {
     private String citta;
 
     //sezione 2
-    private String tipologiaCondottaIllecita;  //sono più stringhe separate da una virgola, ma arriva e viene rest come lista di stringhe
+    private List<String> tipologiaCondottaIllecita;  //sono più stringhe separate da una virgola, ma arriva e viene rest come lista di stringhe
     private String dataAvvenimentoFatti;
     private Boolean fattiAncoraInCorso;
 
@@ -43,11 +49,11 @@ public class SegnalazioneDto {
     private String estremiRegistrazione;
     private String dialogoParticolare;
     private String esitoSegnalazione;
-    private MultipartFile copiaEsposto;
+    private String copiaEsposto;
 
-    private MultipartFile evidenzeDoc;
+    private String evidenzeDoc;
     private String decsrizioneEvidenzeDoc;
-    private MultipartFile evidenzeMultimediali;
+    private String evidenzeMultimediali;
     private String decsrizioneEvidenzeMultim;
     private Boolean isAnonimo;
 

@@ -14,7 +14,7 @@ public class Segnalazione {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "key_16")
+    @Column(name = "key_16", columnDefinition = "varchar(16) not null unique")
     private String key16;
 
     //sezione 1
@@ -70,13 +70,14 @@ public class Segnalazione {
     private String esitoSegnalazione;
 
     @Column(name = "copia_esposto")
+    @Lob
     private byte[] copiaEsposto;
 
     @OneToOne
     @JoinColumn(name = "fk_doc", referencedColumnName = "id")
     private Allegato evidenzeDocumentali;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "fk_multimedia", referencedColumnName = "id")
     private Allegato evidenzeMultimediali;
     @ManyToOne
@@ -84,4 +85,6 @@ public class Segnalazione {
     private DatiUtente identita;
     @Column(name = "accetta_termini")
     private Boolean accettaTermini;
+
+
 }

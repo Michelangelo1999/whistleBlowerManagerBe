@@ -5,15 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "allegato")
+@Table(name = "commento")
 @Data
-public class Allegato {
+public class Commento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Lob
-    private byte[] allegato;
-    @Lob
-    private String descrizione;
 
+    private String commento;
 }
