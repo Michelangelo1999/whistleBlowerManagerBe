@@ -19,7 +19,7 @@ public class DatiUtente {
 
     private String nome;
     private String cognome;
-    @Column(name = "is_anonimo")
+    @Column(name = "data_nascita")
     private LocalDate dataNascita;
     @Column(name = "luogo_nascita")
     private String luogoNascita;

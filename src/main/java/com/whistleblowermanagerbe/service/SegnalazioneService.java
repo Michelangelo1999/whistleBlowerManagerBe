@@ -90,8 +90,8 @@ public class SegnalazioneService {
         s.setEsitoSegnalazione(dto.getEsitoSegnalazione());
         s.setCopiaEsposto(Base64.getDecoder().decode(dto.getCopiaEsposto()));
 
-        s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDecsrizioneEvidenzeDoc()));
-        s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDecsrizioneEvidenzeMultim()));
+        s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
+        s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeDoc()));
 
         s.setIdentita(buildDatiUtente(dto));
 
@@ -199,9 +199,9 @@ public class SegnalazioneService {
                 .esitoSegnalazione(s.getEsitoSegnalazione())
                 //.copiaEsposto()
                 //.evidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
-                .decsrizioneEvidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
+                .descrizioneEvidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
                 //.evidenzeMultimediali()
-                .decsrizioneEvidenzeMultim(s.getEvidenzeMultimediali().getDescrizione())
+                .descrizioneEvidenzeMultim(s.getEvidenzeMultimediali().getDescrizione())
                 .isAnonimo(s.getIdentita().getIsAnonimo())
                 .nome(s.getIdentita().getNome())
                 .cognome(s.getIdentita().getCognome())

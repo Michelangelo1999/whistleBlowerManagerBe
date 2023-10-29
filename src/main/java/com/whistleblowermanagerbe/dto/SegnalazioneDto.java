@@ -52,9 +52,9 @@ public class SegnalazioneDto {
     private String copiaEsposto;
 
     private String evidenzeDoc;
-    private String decsrizioneEvidenzeDoc;
+    private String descrizioneEvidenzeDoc;
     private String evidenzeMultimediali;
-    private String decsrizioneEvidenzeMultim;
+    private String descrizioneEvidenzeMultim;
     private Boolean isAnonimo;
 
     private String nome;

@@ -14,7 +14,7 @@ public class Segnalazione {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "key_16", columnDefinition = "varchar(16) not null unique")
+    @Column(name = "key_16")
     private String key16;
 
     //sezione 1
@@ -35,13 +35,13 @@ public class Segnalazione {
 
     //sezione 2
     @Lob
-    @Column(name = "tipologia_condotta_illecita")
-    private String tipologiaCondottaIllecita;  //sono più stringhe separate da una virgola, ma arriva e viene rest come lista di stringhe
+    //@Column(name = "tipologia_condotta_illecita")
+    private String tipologiaCondottaIllecita;
 
-    @Column(name = "data_avvenimento_fatti")
+    //@Column(name = "data_avvenimento_fatti")
     private LocalDate dataAvvenimentoFatti;
 
-    @Column(name = "fatti_ancora_in_corso")
+    //@Column(name = "fatti_ancora_in_corso")
     private Boolean fattiAncoraInCorso;
 
     //sezione 2 - elenco soggetti coinvolti
@@ -52,25 +52,25 @@ public class Segnalazione {
     private String descrizioneFatti;
 
     //sezione 3 - altri soggetti informati
-    @Column(name = "procedimento_in_atto")
+    //@Column(name = "procedimento_atto")
     private String procedimentoInAtto;
-    @Column(name = "conoscenza procedimento")
+    //@Column(name = "conoscenza procedimento")
     private String conoscenzaProcedimento;    //picklist
     // 3 - procedimento a seguito di mia segnalazione
-    @Column(name = "autorita_riferimento")
+    //@Column(name = "autorita_riferimento")
     private String autoritaRiferimento;    //picklist
-    @Column(name = "data_effettuazione_segnalazione")
+    //@Column(name = "data_effettuazione_segnalazione")
     private LocalDate dataEffettuazioneSegnalazione;
-    @Column(name = "estremi_registrazione")
+    //@Column(name = "estremi_registrazione")
     private String estremiRegistrazione;
 
-    @Column(name = "dialogo_particolare")
+    //@Column(name = "dialogo_particolare")
     private String dialogoParticolare;
-    @Column(name = "esito_segnalazione")
+    //@Column(name = "esito_segnalazione")
     private String esitoSegnalazione;
 
-    @Column(name = "copia_esposto")
     @Lob
+    //@Column(name = "copia_esposto")
     private byte[] copiaEsposto;
 
     @OneToOne
@@ -83,7 +83,7 @@ public class Segnalazione {
     @ManyToOne
     @JoinColumn(name = "fk_dati_utente")
     private DatiUtente identita;
-    @Column(name = "accetta_termini")
+    //@Column(name = "accetta_termini")
     private Boolean accettaTermini;
 
 
