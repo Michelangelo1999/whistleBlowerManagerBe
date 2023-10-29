@@ -76,7 +76,11 @@ public class SegnalazioneService {
         s.setCitta(dto.getCitta());
 
         s.setTipologiaCondottaIllecita(Utility.listToString(dto.getTipologiaCondottaIllecita()));
-        s.setDataAvvenimentoFatti(LocalDate.parse(dto.getDataAvvenimentoFatti(), Utility.FORMATTER));
+        try {
+            s.setDataAvvenimentoFatti(LocalDate.parse(dto.getDataAvvenimentoFatti(), Utility.FORMATTER));
+        } catch (Exception e){
+
+        }
         s.setFattiAncoraInCorso(dto.getFattiAncoraInCorso());
         s.setElencoSoggettiCoinvolti(convert(dto.getElencoSoggettiCoinvolti()));
         s.setDescrizioneFatti(dto.getDescrizioneFatti());
@@ -84,14 +88,27 @@ public class SegnalazioneService {
         s.setProcedimentoInAtto(dto.getProcedimentoInAtto());
         s.setConoscenzaProcedimento(dto.getConoscenzaProcedimento());
         s.setAutoritaRiferimento(dto.getAutoritaRiferimento());
-        s.setDataEffettuazioneSegnalazione(LocalDate.parse(dto.getDataEffettuazioneSegnalazione(), Utility.FORMATTER));
+        try {
+            s.setDataEffettuazioneSegnalazione(LocalDate.parse(dto.getDataEffettuazioneSegnalazione(), Utility.FORMATTER));
+        } catch (Exception e){
+
+        }
         s.setEstremiRegistrazione(dto.getEstremiRegistrazione());
         s.setDialogoParticolare(dto.getDialogoParticolare());
         s.setEsitoSegnalazione(dto.getEsitoSegnalazione());
-        s.setCopiaEsposto(Base64.getDecoder().decode(dto.getCopiaEsposto()));
 
-        s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
-        s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeDoc()));
+        try {
+            s.setCopiaEsposto(Base64.getDecoder().decode(dto.getCopiaEsposto()));
+        } catch (Exception e){
+
+        }
+
+        try {
+            s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
+            s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeDoc()));
+        } catch (Exception e){
+
+        }
 
         s.setIdentita(buildDatiUtente(dto));
 
@@ -120,7 +137,11 @@ public class SegnalazioneService {
                 du.setLuogoNascita(dto.getLuogoNascita());
                 du.setMansione(dto.getMansione());
                 du.setIndirizzo(dto.getIndirizzo());
-                du.setDataNascita(LocalDate.parse(dto.getDataNascita(), Utility.FORMATTER));
+                try {
+                    du.setDataNascita(LocalDate.parse(dto.getDataNascita(), Utility.FORMATTER));
+                }catch (Exception e){
+
+                }
                 du.setCodicePostale(dto.getCodicePostale());
                 du.setTelefono(dto.getTelefono());
             }
