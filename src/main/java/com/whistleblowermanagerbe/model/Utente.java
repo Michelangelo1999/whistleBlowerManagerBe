@@ -21,6 +21,7 @@ public class Utente {
     private String cognome;
     private String email;
     private String password;
+    private String nomeUtente;
     private Boolean cancellato;
     private Boolean abilitato;
 

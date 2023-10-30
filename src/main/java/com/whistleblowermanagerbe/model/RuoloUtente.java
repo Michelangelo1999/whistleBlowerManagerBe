@@ -1,5 +1,6 @@
 package com.whistleblowermanagerbe.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ruolo_utente")
 @Data
+@AllArgsConstructor
 public class RuoloUtente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

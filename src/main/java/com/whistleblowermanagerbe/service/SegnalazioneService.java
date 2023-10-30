@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class SegnalazioneService {
 
-    private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String CHARACTERS = "0123456789";
     private static final int KEY_LENGTH = 16;
 
     @Autowired
