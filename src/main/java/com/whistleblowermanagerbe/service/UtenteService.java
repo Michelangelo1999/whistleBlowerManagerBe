@@ -121,7 +121,7 @@ public class UtenteService {
                 log.info("creo l'admin");
                 Utente admin = new Utente();
                 admin.setNomeUtente("admin");
-                admin.setPassword("whistleBlowerManager_2023!");
+                admin.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
                 admin.setAbilitato(true);
                 admin = utenteRepository.save(admin);
                 RuoloUtente ponte = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.ADMIN.name()).get(), admin);

@@ -1,7 +1,11 @@
 package com.whistleblowermanagerbe.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,6 +13,7 @@ import javax.persistence.*;
 @Table(name = "ruolo_utente")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class RuoloUtente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +25,6 @@ public class RuoloUtente {
 
     @ManyToOne()
     @JoinColumn(name = "fk_utente")
+    @JsonIgnore
     private Utente utente;
 }
