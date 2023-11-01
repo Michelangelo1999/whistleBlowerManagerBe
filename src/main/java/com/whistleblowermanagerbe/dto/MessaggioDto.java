@@ -1,24 +1,19 @@
-package com.whistleblowermanagerbe.model;
+package com.whistleblowermanagerbe.dto;
 
+import com.whistleblowermanagerbe.model.Allegato;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "messaggio")
 @Data
-public class Messaggio {
+public class MessaggioDto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "data_ora")
     private LocalDateTime dataOra;
-
-    private Integer idWriter;
-
     private String messaggio;
-    @OneToOne
-    @JoinColumn(name = "fk_allegato")
-    private Allegato allegato;
+    private String allegato;
 }

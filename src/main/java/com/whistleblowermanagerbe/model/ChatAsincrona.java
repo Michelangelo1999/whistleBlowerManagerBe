@@ -14,9 +14,9 @@ public class ChatAsincrona {
     private Integer id;
 
     @OneToOne()
-    @JoinColumn(name = "fk_segnalazione")
-    private Segnalazione segnalazione;
-    @OneToMany
+    @JoinColumn(name = "fk_info_segnalazione")
+    private InfoSegnalazione infoSegnalazione;
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_chat_asincrona")
     private List<Messaggio> messaggi;
 

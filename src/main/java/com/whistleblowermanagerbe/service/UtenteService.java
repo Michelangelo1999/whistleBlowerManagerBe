@@ -1,7 +1,9 @@
 package com.whistleblowermanagerbe.service;
 
 import com.whistleblowermanagerbe.dto.ChangePasswordRequest;
+import com.whistleblowermanagerbe.dto.LoginRequest;
 import com.whistleblowermanagerbe.dto.NewUserRequest;
+import com.whistleblowermanagerbe.dto.NumeroUtentiDto;
 import com.whistleblowermanagerbe.model.Ruolo;
 import com.whistleblowermanagerbe.model.RuoloUtente;
 import com.whistleblowermanagerbe.model.Utente;
@@ -18,6 +20,7 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtenteService {
@@ -34,6 +37,10 @@ public class UtenteService {
     private RuoloUtenteRepository ruoloUtenteRepository;
 
     public Utente createUtente(NewUserRequest newUserRequest){
+        Optional<Utente> opt = utenteRepository.findByNomeUtente(newUserRequest.getNomeUtente());
+        if(opt.isPresent()){
+            return null;
+        }
         Utente u = new Utente();
         u.setNome(newUserRequest.getNome());
         u.setCognome(newUserRequest.getCognome());
@@ -53,6 +60,48 @@ public class UtenteService {
         } else {
             throw new Exception("Password errata");
         }
+    }
+
+    public Utente login(LoginRequest loginRequest){
+        Optional<Utente> utenteOpt = utenteRepository.findByNomeUtente(loginRequest.getNomeUtente());
+        if(utenteOpt.isPresent()){
+            if(Utility.verifyPassword(loginRequest.getPassword(), utenteOpt.get().getPassword())){
+                return utenteOpt.get();
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public List<Utente> findAllUtenti(String ruolo){
+        switch (ruolo){
+            case "I": ruolo = com.whistleblowermanagerbe.Enum.Ruolo.ISTRUTTORE.name();
+            break;
+            case "SV": ruolo = com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name();
+            break;
+            case "CID": ruolo = com.whistleblowermanagerbe.Enum.Ruolo.CUSTODE_IDENTITA.name();
+            break;
+        }
+
+        List<Utente> utenteList = utenteRepository.findAllByRoles(ruolo);
+        return utenteList;
+    }
+
+    public NumeroUtentiDto countUser(){
+        NumeroUtentiDto out = new NumeroUtentiDto();
+        out.setNumeroI(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.ISTRUTTORE.name()));
+        out.setNumeroSv(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name()));
+        out.setNumeroCid(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.CUSTODE_IDENTITA.name()));
+        return out;
+    }
+
+    public void abilitaUtente(Integer idUtente, Boolean abilitato){
+        utenteRepository.abilitaUtente(idUtente, abilitato);
+    }
+
+    public void cancellaUtente(Integer idUtente){
+        utenteRepository.eliminaUtente(idUtente);
     }
 
     @PostConstruct
