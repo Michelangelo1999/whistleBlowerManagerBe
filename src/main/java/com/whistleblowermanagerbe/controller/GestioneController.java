@@ -3,10 +3,7 @@ package com.whistleblowermanagerbe.controller;
 import com.whistleblowermanagerbe.service.GestioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "private/gestione")
@@ -33,5 +30,24 @@ public class GestioneController {
     @GetMapping(value = "getAllRichiesteId")
     public ResponseEntity<?> getAllRichiesteId(){
         return ResponseEntity.ok(gestioneService.findAllRichiesteId());
+    }
+
+    @GetMapping(value = "assegnaSegnalazione/{fkIstruttore}/{idSegnalazione}")
+    public ResponseEntity<?> assegnaSegnalazione(@PathVariable(name = "fkIstruttore")Integer fkIstruttore, @PathVariable(name = "idSegnalazione")Integer idSegnalazione){
+        try{
+            gestioneService.assegnaSegnalazione(idSegnalazione, fkIstruttore);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(value = "addRichiestaIdentita/{idSegnalazione}")
+    public ResponseEntity<?> addRichiestaIdentita(@PathVariable(name = "idSegnalazione") Integer idSegnalazione, @RequestBody String messaggio){
+        try{
+            return ResponseEntity.ok(gestioneService.addRichiestaIdentita(idSegnalazione, messaggio));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
