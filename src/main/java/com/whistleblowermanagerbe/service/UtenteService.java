@@ -9,6 +9,7 @@ import com.whistleblowermanagerbe.model.RuoloUtente;
 import com.whistleblowermanagerbe.model.Utente;
 import com.whistleblowermanagerbe.repo.RuoloRepository;
 import com.whistleblowermanagerbe.repo.RuoloUtenteRepository;
+import com.whistleblowermanagerbe.repo.SegnalazioneRepository;
 import com.whistleblowermanagerbe.repo.UtenteRepository;
 import com.whistleblowermanagerbe.utils.Utility;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public class UtenteService {
 
     @Autowired
     private RuoloUtenteRepository ruoloUtenteRepository;
+
+    @Autowired
+    private SegnalazioneRepository segnalazioneRepository;
 
     public Utente createUtente(NewUserRequest newUserRequest){
         Optional<Utente> opt = utenteRepository.findByNomeUtente(newUserRequest.getNomeUtente());
@@ -93,6 +97,7 @@ public class UtenteService {
         out.setNumeroI(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.ISTRUTTORE.name()));
         out.setNumeroSv(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name()));
         out.setNumeroCid(utenteRepository.countUser(com.whistleblowermanagerbe.Enum.Ruolo.CUSTODE_IDENTITA.name()));
+        out.setNumeroSegnalazioni(segnalazioneRepository.countSegnalazioni());
         return out;
     }
 

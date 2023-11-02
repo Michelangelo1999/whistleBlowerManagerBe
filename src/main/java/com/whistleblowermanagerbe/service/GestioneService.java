@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -98,5 +99,21 @@ public class GestioneService {
         a.setDescrizione("Allegato chat");
         a.setAllegato(Base64.getDecoder().decode(allegato));
         return allegatoRepository.save(a);
+    }
+
+    public List<InfoSegnalazione> getAllSegnalazioniNonAssegnate(){
+        return infoSegnalazioneRepository.findAllNonAssegnate();
+    }
+
+    public List<InfoSegnalazione> getAllSegnalazioni(){
+        return infoSegnalazioneRepository.findAll();
+    }
+
+    public List<InfoSegnalazione> getAllSegnalazioni(Integer idIstruttore){
+        return infoSegnalazioneRepository.findAllAssegnate(idIstruttore);
+    }
+
+    public List<RichiestaIdentita> findAllRichiesteId(){
+        return richiestaIdentitaRepository.findAll();
     }
 }
