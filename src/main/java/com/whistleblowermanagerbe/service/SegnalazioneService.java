@@ -194,6 +194,7 @@ public class SegnalazioneService {
     }
 
     public SegnalazioneDto getSegnalazioneByKey(String key16){
+        key16 = key16.substring(0, 4).concat(key16.substring(5, 9)).concat(key16.substring(10, 14)).concat(key16.substring(15));
         return converter(segnalazioneRepository.findByKey16(key16).get());
     }
 

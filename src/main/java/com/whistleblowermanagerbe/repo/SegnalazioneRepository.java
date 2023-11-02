@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface SegnalazioneRepository extends JpaRepository<Segnalazione, Integer> {
 
+    @Query(value = "select * from segnalazione where key_16 = :key16")
     Optional<Segnalazione> findByKey16(String key16);
     @Query(value = "select count(id) from segnalazione", nativeQuery = true)
     Integer countSegnalazioni();

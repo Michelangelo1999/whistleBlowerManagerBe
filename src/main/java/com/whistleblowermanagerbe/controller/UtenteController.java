@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping(value = "private/utente")
 public class UtenteController {
@@ -25,6 +27,7 @@ public class UtenteController {
         return ResponseEntity.ok(utenteService.countUser());
     }
 
+    @Transactional
     @GetMapping(value = "disabilitaAbilitaUtente/{idUtente}/{abilitato}")
     public ResponseEntity<?> disabilitaAbilitaUtente(@PathVariable(name = "idUtente") Integer idUtente, @PathVariable(name = "abilitato") Boolean abilitato){
         try {
