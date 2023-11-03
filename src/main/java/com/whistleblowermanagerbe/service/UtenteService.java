@@ -1,16 +1,12 @@
 package com.whistleblowermanagerbe.service;
 
+import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
 import com.whistleblowermanagerbe.dto.ChangePasswordRequest;
 import com.whistleblowermanagerbe.dto.LoginRequest;
 import com.whistleblowermanagerbe.dto.NewUserRequest;
 import com.whistleblowermanagerbe.dto.NumeroUtentiDto;
-import com.whistleblowermanagerbe.model.Ruolo;
-import com.whistleblowermanagerbe.model.RuoloUtente;
-import com.whistleblowermanagerbe.model.Utente;
-import com.whistleblowermanagerbe.repo.RuoloRepository;
-import com.whistleblowermanagerbe.repo.RuoloUtenteRepository;
-import com.whistleblowermanagerbe.repo.SegnalazioneRepository;
-import com.whistleblowermanagerbe.repo.UtenteRepository;
+import com.whistleblowermanagerbe.model.*;
+import com.whistleblowermanagerbe.repo.*;
 import com.whistleblowermanagerbe.utils.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +37,16 @@ public class UtenteService {
 
     @Autowired
     private SegnalazioneRepository segnalazioneRepository;
+
+    //questi autow sono da rimuovere dopo rimozione dati di test
+    @Autowired
+    private DatiUtenteRepository dur;
+
+    @Autowired
+    private SegnalazioneRepository sRepo;
+
+    @Autowired
+    private InfoSegnalazioneRepository infoRepo;
 
     public Utente createUtente(NewUserRequest newUserRequest){
         Optional<Utente> opt = utenteRepository.findByNomeUtente(newUserRequest.getNomeUtente());
@@ -131,11 +139,100 @@ public class UtenteService {
                 admin = utenteRepository.save(admin);
                 RuoloUtente ponte = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.ADMIN.name()).get(), admin);
                 ruoloUtenteRepository.save(ponte);
+
+                //inserisco altri dati di test da rimuovere successivamente
+                creaUtenti();
+                creaSegnalazioni();
             }
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    private void creaUtenti(){
+        Utente istruttore = new Utente();
+        istruttore.setNomeUtente("istruttore");
+        istruttore.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
+        istruttore.setAbilitato(true);
+        istruttore = utenteRepository.save(istruttore);
+        RuoloUtente ponte1 = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.ISTRUTTORE.name()).get(), istruttore);
+        ruoloUtenteRepository.save(ponte1);
 
+        Utente supervisore = new Utente();
+        supervisore.setNomeUtente("supervisore");
+        supervisore.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
+        supervisore.setAbilitato(true);
+        supervisore = utenteRepository.save(supervisore);
+        RuoloUtente ponte2 = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name()).get(), supervisore);
+        ruoloUtenteRepository.save(ponte2);
+    }
+
+    private void creaSegnalazioni(){
+        Segnalazione s = new Segnalazione();
+        s.setKey16("1234567898765432");
+        s.setRuoloSegnalante("Dipendente di questa Amministrazione/Ente");
+        s.setDenominazioneCompletaUfficio("SiteVenue");
+        s.setRagioneSociale("SiteVenue SRL");
+        s.setIndirizzoSede("FULL REMOTE");
+        s.setCitta("Pignataro - Portico");
+        s.setTipologiaCondottaIllecita("Da definire");
+        s.setFattiAncoraInCorso(true);
+
+        s.setElencoSoggettiCoinvolti(createSoggetto());
+        s.setDescrizioneFatti("Pietro fa i pezzotti a front End per poi dare la colpa al coAdmin");
+        s.setProcedimentoInAtto("Il coAdmin cerca di spiegare a Pietro il Be con scarsi risultati");
+        s.setConoscenzaProcedimento("Non conosco il procedimento");
+        s.setAutoritaRiferimento("Comune di Portico di Caserta");
+        s.setDataEffettuazioneSegnalazione(LocalDate.now());
+        s.setEstremiRegistrazione("Estremi");
+        s.setDialogoParticolare("Sto creando la serra per le tartarughe");
+        s.setEsitoSegnalazione("Da definire");
+
+        s.setIdentita(createId());
+        s.setAccettaTermini(true);
+
+        s = sRepo.save(s);
+
+        InfoSegnalazione info = new InfoSegnalazione();
+        info.setDataCreazione(LocalDate.now());
+        info.setUltimoAggiornamento(LocalDate.now());
+        info.setStato(StatoSegnalazione.NON_ANCORA_PRESA_IN_CARICO.name());
+        info.setIdentitaFornita(true);
+        info.setIdentitaVerificata(false);
+        info.setOggettoSegnalazione("To be Assigned");
+        info.setSegnalazione(s);
+        infoRepo.save(info);
+    }
+
+    private List<SoggettoCoinvolto> createSoggetto(){
+        List<SoggettoCoinvolto> out = new ArrayList<>();
+        SoggettoCoinvolto s = new SoggettoCoinvolto();
+        s.setRagioneSocialeCognome("Natale");
+        s.setNome("Pietro");
+        s.setEnte("SiteVenue");
+        s.setQualifica("CEO");
+        s.setRuoloCoinvolgimento("Attore principale");
+        s.setTelefono("3281470241");
+        s.setEmail("pNatale@gmail.com");
+        s.setBeneficioAccaduto("Pace interiore");
+        s.setNote("Niente da aggiungere");
+        out.add(s);
+        return out;
+    }
+
+    private DatiUtente createId(){
+        DatiUtente out = new DatiUtente();
+        out.setTelefono("3281450681");
+        out.setIndirizzo("Via Napoli 49");
+        out.setCodicePostale("81050");
+        out.setNome("Michelangelo");
+        out.setMansione("CDO");
+        out.setEmail("mikidenicola007@gmail.com");
+        out.setCitta("Portico di Caserta");
+        out.setIsAnonimo(false);
+        out.setCodiceFiscale("DNCMHL99E26E932Y");
+        out.setLuogoNascita("Marcianhattan");
+        out.setDataNascita(LocalDate.parse("26-05-1999", Utility.FORMATTER));
+        return dur.save(out);
+    }
 }
