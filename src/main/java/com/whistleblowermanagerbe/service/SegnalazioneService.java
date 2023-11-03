@@ -194,8 +194,12 @@ public class SegnalazioneService {
     }
 
     public SegnalazioneDto getSegnalazioneByKey(String key16){
-        key16 = key16.substring(0, 4).concat(key16.substring(5, 9)).concat(key16.substring(10, 14)).concat(key16.substring(15));
-        return converter(segnalazioneRepository.findByKey16(key16).get());
+        if(key16.contains("-")) {
+            key16 = key16.substring(0, 4).concat(key16.substring(5, 9)).concat(key16.substring(10, 14)).concat(key16.substring(15));
+        }
+        Segnalazione s = segnalazioneRepository.findByKey16(key16).get();
+        SegnalazioneDto out = converter(s);
+        return out;
     }
 
     private SegnalazioneDto converter(Segnalazione s){
@@ -208,26 +212,26 @@ public class SegnalazioneService {
                 .indirizzoSede(s.getIndirizzoSede())
                 .citta(s.getCitta())
                 .tipologiaCondottaIllecita(Utility.stringToList(s.getTipologiaCondottaIllecita()))
-                .dataAvvenimentoFatti(s.getDataAvvenimentoFatti().format(Utility.FORMATTER))
+                .dataAvvenimentoFatti(Utility.getDataFormattata(s.getDataAvvenimentoFatti()))
                 .fattiAncoraInCorso(s.getFattiAncoraInCorso())
                 .elencoSoggettiCoinvolti(convertModel(s.getElencoSoggettiCoinvolti()))
                 .descrizioneFatti(s.getDescrizioneFatti())
                 .procedimentoInAtto(s.getProcedimentoInAtto())
                 .conoscenzaProcedimento(s.getConoscenzaProcedimento())
                 .autoritaRiferimento(s.getAutoritaRiferimento())
-                .dataEffettuazioneSegnalazione(s.getDataEffettuazioneSegnalazione().format(Utility.FORMATTER))
+                .dataEffettuazioneSegnalazione(Utility.getDataFormattata(s.getDataEffettuazioneSegnalazione()))
                 .estremiRegistrazione(s.getEstremiRegistrazione())
                 .dialogoParticolare(s.getDialogoParticolare())
                 .esitoSegnalazione(s.getEsitoSegnalazione())
                 //.copiaEsposto()
                 //.evidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
-                .descrizioneEvidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
+                .descrizioneEvidenzeDoc(s.getEvidenzeDocumentali() != null ? s.getEvidenzeDocumentali().getDescrizione() : null)
                 //.evidenzeMultimediali()
-                .descrizioneEvidenzeMultim(s.getEvidenzeMultimediali().getDescrizione())
+                .descrizioneEvidenzeMultim(s.getEvidenzeMultimediali() != null ? s.getEvidenzeMultimediali().getDescrizione() : null)
                 .isAnonimo(s.getIdentita().getIsAnonimo())
                 .nome(s.getIdentita().getNome())
                 .cognome(s.getIdentita().getCognome())
-                .dataNascita(s.getIdentita().getDataNascita().format(Utility.FORMATTER))
+                .dataNascita(Utility.getDataFormattata(s.getIdentita().getDataNascita()))
                 .luogoNascita(s.getIdentita().getLuogoNascita())
                 .codiceFiscale(s.getIdentita().getCodiceFiscale())
                 .indirizzo(s.getIdentita().getIndirizzo())

@@ -2,6 +2,7 @@ package com.whistleblowermanagerbe.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,5 +30,13 @@ public class Utility {
     // Verifica una password rispetto a una versione crittografata
     public static boolean verifyPassword(String password, String hashedPassword) {
         return PASSWORD_ENCODER.matches(password, hashedPassword);
+    }
+
+    public static String getDataFormattata(LocalDate date){
+        try{
+            return date.format(FORMATTER);
+        }catch (Exception e){
+            return null;
+        }
     }
 }
