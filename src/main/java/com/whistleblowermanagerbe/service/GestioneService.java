@@ -1,6 +1,7 @@
 package com.whistleblowermanagerbe.service;
 
 import com.whistleblowermanagerbe.Enum.StatoRichiestaId;
+import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
 import com.whistleblowermanagerbe.dto.MessaggioDto;
 import com.whistleblowermanagerbe.model.*;
 import com.whistleblowermanagerbe.repo.*;
@@ -57,6 +58,13 @@ public class GestioneService {
     public void assegnaSegnalazione(Integer idSegnalazione, Integer idUtente){
         InfoSegnalazione i = infoSegnalazioneRepository.findById(idSegnalazione).get();
         i.setAssegnatario(utenteRepository.findById(idUtente).get());
+        i.setStato(StatoSegnalazione.PRESA_IN_CARICO.name());
+        infoSegnalazioneRepository.save(i);
+    }
+
+    public void changeStato(Integer idInfoSegnalazione, String nuovoStato){
+        InfoSegnalazione i = infoSegnalazioneRepository.findById(idInfoSegnalazione).get();
+        i.setStato(nuovoStato);
         infoSegnalazioneRepository.save(i);
     }
 
