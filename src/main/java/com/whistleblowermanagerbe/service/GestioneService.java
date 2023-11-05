@@ -4,6 +4,7 @@ import com.whistleblowermanagerbe.Enum.StatoRichiestaId;
 import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
 import com.whistleblowermanagerbe.dto.CercaRichiestaIdDto;
 import com.whistleblowermanagerbe.dto.MessaggioDto;
+import com.whistleblowermanagerbe.dto.RichiestaIdentitaDto;
 import com.whistleblowermanagerbe.model.*;
 import com.whistleblowermanagerbe.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,8 +123,25 @@ public class GestioneService {
         return infoSegnalazioneRepository.findAllAssegnate(idIstruttore);
     }
 
-    public List<RichiestaIdentita> findAllRichiesteId(){
-        return richiestaIdentitaRepository.findAll();
+    public List<RichiestaIdentitaDto> findAllRichiesteId(){
+        List<RichiestaIdentita> listaRichieste = richiestaIdentitaRepository.findAll();
+        return convert(listaRichieste);
+    }
+
+    private List<RichiestaIdentitaDto> convert (List<RichiestaIdentita> input){
+        List<RichiestaIdentitaDto> out = new ArrayList<>();
+        for (RichiestaIdentita r : input){
+            RichiestaIdentitaDto dto = new RichiestaIdentitaDto();
+            dto.setId(r.getId());
+            dto.setStato(r.getStato());
+            dto.setDataRichiesta(r.getDataRichiesta());
+            dto.setIdSegnalazione(r.getSegnalazione().getId());
+            dto.setMessaggio(r.getMessaggio());
+            dto.setNomeIstruttore(utenteRepository.findNomeBySegnalazione(r.getSegnalazione().getId()));
+            dto.setCognomeIstruttore(utenteRepository.findCognomeBySegnalazione(r.getSegnalazione().getId()));
+            out.add(dto);
+        }
+        return out;
     }
 
     public CercaRichiestaIdDto cercaRichiesta(Integer idSegnalazione){

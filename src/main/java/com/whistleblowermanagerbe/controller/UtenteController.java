@@ -50,6 +50,7 @@ public class UtenteController {
             utenteService.cambiaPassword(changePasswordRequest);
             return ResponseEntity.ok().build();
         } catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }

@@ -28,4 +28,10 @@ public interface UtenteRepository extends JpaRepository<Utente, Integer> {
     @Query(value = "alter table utente set cancellato = true where id = :idUtente", nativeQuery = true)
     @Modifying
     void eliminaUtente(Integer idUtente);
+
+    @Query(value = "select nome from utente where id = (select fk_istruttore from info_segnalazione where fk_segnalazione = :idSegnalazione)", nativeQuery = true)
+    String findNomeBySegnalazione(Integer idSegnalazione);
+
+    @Query(value = "select cognome from utente where id = (select fk_istruttore from info_segnalazione where fk_segnalazione = :idSegnalazione)", nativeQuery = true)
+    String findCognomeBySegnalazione(Integer idSegnalazione);
 }

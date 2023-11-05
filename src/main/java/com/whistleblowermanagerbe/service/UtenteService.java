@@ -69,6 +69,9 @@ public class UtenteService {
         Utente u = utenteRepository.findById(changePasswordRequest.getIdUtente()).get();
         if(Utility.verifyPassword(changePasswordRequest.getVecchiaPassword(), u.getPassword())){
             u.setPassword(Utility.encryptPassword(changePasswordRequest.getNuovaPassword()));
+            u.setNome(changePasswordRequest.getNome());
+            u.setCognome(changePasswordRequest.getCognome());
+            utenteRepository.save(u);
         } else {
             throw new Exception("Password errata");
         }
