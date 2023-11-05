@@ -1,5 +1,6 @@
 package com.whistleblowermanagerbe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class RichiestaIdentita {
 
     @OneToOne
     @JoinColumn(name = "fk_segnalazione")
+    @JsonIgnore
     private Segnalazione segnalazione;
 
     private LocalDate dataRichiesta;

@@ -2,6 +2,7 @@ package com.whistleblowermanagerbe.service;
 
 import com.whistleblowermanagerbe.Enum.StatoRichiestaId;
 import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
+import com.whistleblowermanagerbe.dto.CercaRichiestaIdDto;
 import com.whistleblowermanagerbe.dto.MessaggioDto;
 import com.whistleblowermanagerbe.model.*;
 import com.whistleblowermanagerbe.repo.*;
@@ -123,5 +124,20 @@ public class GestioneService {
 
     public List<RichiestaIdentita> findAllRichiesteId(){
         return richiestaIdentitaRepository.findAll();
+    }
+
+    public CercaRichiestaIdDto cercaRichiesta(Integer idSegnalazione){
+        CercaRichiestaIdDto out = new CercaRichiestaIdDto();
+        Optional<RichiestaIdentita> richiestaIdentitaOpt = richiestaIdentitaRepository.findBySegnalazione(idSegnalazione);
+        if(richiestaIdentitaOpt.isPresent()){
+            out.setRichiesta(richiestaIdentitaOpt.get());
+            if(out.getRichiesta().getStato().equalsIgnoreCase(StatoRichiestaId.APPROVATA.name())){
+                DatiUtente datiUtente = datiUtenteRepository.findBySegnalazione(idSegnalazione);
+                out.setIdentita(datiUtente);
+            }
+            return out;
+        } else{
+            return out;
+        }
     }
 }
