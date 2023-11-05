@@ -53,8 +53,10 @@ public class GestioneService {
         return richiestaIdentitaRepository.save(ri);
     }
 
-    public RichiestaIdentita updateRichiestaIdentita(RichiestaIdentita richiestaIdentita){
-        return richiestaIdentitaRepository.save(richiestaIdentita);
+    public void cambiaStatoRichiesta(Integer idRichiesta, String stato){
+        RichiestaIdentita ri = richiestaIdentitaRepository.findById(idRichiesta).get();
+        ri.setStato(stato);
+        richiestaIdentitaRepository.save(ri);
     }
 
     public void assegnaSegnalazione(Integer idSegnalazione, Integer idUtente){

@@ -51,6 +51,17 @@ public class GestioneController {
         }
     }
 
+    @GetMapping(value = "cambiaStatoRichiesta/{idRichiesta}/{stato}")
+    public ResponseEntity<?> cambiaStatoRichiesta(@PathVariable(name = "idRichiesta") Integer idRichiesta, @PathVariable(name = "stato") String stato){
+        try{
+            gestioneService.cambiaStatoRichiesta(idRichiesta, stato);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping(value = "cambiaStato/{idInfo}/{stato}")
     public ResponseEntity<?> cambiaStato(@PathVariable(name = "idInfo") Integer idInfo, @PathVariable(name = "stato") String stato){
         try{
