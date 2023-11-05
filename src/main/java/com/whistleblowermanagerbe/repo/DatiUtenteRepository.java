@@ -12,6 +12,6 @@ public interface DatiUtenteRepository extends JpaRepository<DatiUtente, Integer>
 
     Optional<DatiUtente> findByCodiceFiscale(String codiceFiscale);
 
-    @Query(value = "select * from dati_utente where id = (select * from segnalazione where id = :idSegnalazione)", nativeQuery = true)
+    @Query(value = "select * from dati_utente where id = (select fk_dati_utente from segnalazione where id = :idSegnalazione)", nativeQuery = true)
     DatiUtente findBySegnalazione(Integer idSegnalazione);
 }
