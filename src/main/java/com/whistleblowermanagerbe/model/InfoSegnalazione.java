@@ -40,4 +40,7 @@ public class InfoSegnalazione {
     @OneToMany
     @JoinColumn(name = "fk_info_segnalazione")
     private List<Commento> commenti;
+
+    @Transient
+    private Integer giorniAllaScadenza;
 }

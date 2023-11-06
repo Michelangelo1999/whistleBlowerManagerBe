@@ -2,16 +2,17 @@ package com.whistleblowermanagerbe.service;
 
 import com.whistleblowermanagerbe.Enum.StatoRichiestaId;
 import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
-import com.whistleblowermanagerbe.dto.CercaRichiestaIdDto;
-import com.whistleblowermanagerbe.dto.MessaggioDto;
-import com.whistleblowermanagerbe.dto.RichiestaIdentitaDto;
+import com.whistleblowermanagerbe.dto.*;
 import com.whistleblowermanagerbe.model.*;
 import com.whistleblowermanagerbe.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -159,5 +160,92 @@ public class GestioneService {
         } else{
             return out;
         }
+    }
+
+    public FascicoloDto createFascicolo(FascicoloDto newFascicolo){
+        Fascicolo f = new Fascicolo();
+        f.setDescrizione(newFascicolo.getDescrizione());
+        f.setFondatezza(newFascicolo.getFondatezza());
+        f.setStato(newFascicolo.getStato());
+        f.setTipologia(newFascicolo.getTipologia());
+        f.setAreaInteressata(newFascicolo.getAreaInteressata());
+        f.setListaInfoSegnalazioni(new ArrayList<>());
+        f.getListaInfoSegnalazioni().add(infoSegnalazioneRepository.findById(newFascicolo.getIdPrimaSegnalazioneInfo()).get());
+        return convert(fascicoloRepository.save(f));
+    }
+
+    public FascicoloDto updateFascicolo(FascicoloDto in){
+        Fascicolo f = fascicoloRepository.findById(in.getId()).get();
+        f.setDescrizione(f.getDescrizione());
+        f.setFondatezza(f.getFondatezza());
+        f.setStato(f.getStato());
+        f.setTipologia(f.getTipologia());
+        f.setAreaInteressata(f.getAreaInteressata());
+        return convert(fascicoloRepository.save(f));
+    }
+
+    public void addSegnalazioneInFascicolo(Integer idInfo, Integer idFascicolo){
+        infoSegnalazioneRepository.addSegnalazioneInFascicolo(idFascicolo, idInfo);
+    }
+
+    public FascicoloDto getFascicoloById(Integer id){
+        Fascicolo f = fascicoloRepository.findById(id).get();
+        FascicoloDto out = convert(f);
+        return out;
+    }
+
+    public List<FascicoloDto> getAllFascicoli(){
+        List<FascicoloDto> out = new ArrayList<>();
+        List<Fascicolo> db = fascicoloRepository.findAll();
+        for(Fascicolo f : db){
+            out.add(convert(f));
+        }
+        return out;
+    }
+
+    public List<InfoSegnalazione> getSegnalazioniByFascicolo(Integer idFascicolo){
+        return infoSegnalazioneRepository.findAllByFascicolo(idFascicolo);
+    }
+
+    public FascicoloDto getFascicoloBySegnalazioneId(Integer idInfo){
+        Optional<Fascicolo> opt = fascicoloRepository.findByInfoSegnalazione(idInfo);
+        if(opt.isPresent()){
+            return convert(opt.get());
+        } else {
+            return null;
+        }
+    }
+
+    public InfoSegnalazione getInfoById(Integer id){
+        InfoSegnalazione is = infoSegnalazioneRepository.findById(id).get();
+        int giorniTrascorsi = (int)ChronoUnit.DAYS.between(is.getDataCreazione(), LocalDate.now());
+        is.setGiorniAllaScadenza(giorniTrascorsi <= 10 ? 10-giorniTrascorsi : 0);
+        return is;
+    }
+
+    public byte[] downloadAllegato(Integer id) throws IOException {
+        Allegato allegato = allegatoRepository.findById(id).get();
+
+        return allegato.getAllegato();
+    }
+
+    private FascicoloDto convert(Fascicolo f){
+        FascicoloDto out = new FascicoloDto();
+        out.setDescrizione(f.getDescrizione());
+        out.setId(f.getId());
+        out.setTipologia(f.getTipologia());
+        out.setFondatezza(f.getFondatezza());
+        out.setAreaInteressata(f.getAreaInteressata());
+        out.setStato(f.getStato());
+        return out;
+    }
+
+    public List<AllegatoDto> getAllegatiByInfo(Integer idInfo){
+        List<Allegato> modelList = allegatoRepository.findAllByInfoId(idInfo);
+        List<AllegatoDto> out = new ArrayList<>();
+        for(Allegato a : modelList){
+            out.add(new AllegatoDto(a.getId(), a.getDescrizione()));
+        }
+        return out;
     }
 }

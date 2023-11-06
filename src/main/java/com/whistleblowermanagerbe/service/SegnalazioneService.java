@@ -91,23 +91,23 @@ public class SegnalazioneService {
         try {
             s.setDataEffettuazioneSegnalazione(LocalDate.parse(dto.getDataEffettuazioneSegnalazione(), Utility.FORMATTER));
         } catch (Exception e){
-
+            e.printStackTrace();
         }
         s.setEstremiRegistrazione(dto.getEstremiRegistrazione());
         s.setDialogoParticolare(dto.getDialogoParticolare());
         s.setEsitoSegnalazione(dto.getEsitoSegnalazione());
 
         try {
-            s.setCopiaEsposto(Base64.getDecoder().decode(dto.getCopiaEsposto()));
+            s.setCopiaEsposto(addUpdateAllegato(dto.getCopiaEsposto(), "Copia Esposto"));
         } catch (Exception e){
-
+            e.printStackTrace();
         }
 
         try {
             s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
             s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeDoc()));
         } catch (Exception e){
-
+            e.printStackTrace();
         }
 
         s.setIdentita(buildDatiUtente(dto));
@@ -223,10 +223,10 @@ public class SegnalazioneService {
                 .estremiRegistrazione(s.getEstremiRegistrazione())
                 .dialogoParticolare(s.getDialogoParticolare())
                 .esitoSegnalazione(s.getEsitoSegnalazione())
-                //.copiaEsposto()
-                //.evidenzeDoc(s.getEvidenzeDocumentali().getDescrizione())
+                .idCopiaEsposto(s.getCopiaEsposto() != null ? s.getCopiaEsposto().getId() : null)
+                .idEvidenzeDoc(s.getEvidenzeDocumentali() != null ? s.getEvidenzeDocumentali().getId() : null)
                 .descrizioneEvidenzeDoc(s.getEvidenzeDocumentali() != null ? s.getEvidenzeDocumentali().getDescrizione() : null)
-                //.evidenzeMultimediali()
+                .idEvidenzeMultim(s.getEvidenzeMultimediali() != null ? s.getEvidenzeMultimediali().getId() : null)
                 .descrizioneEvidenzeMultim(s.getEvidenzeMultimediali() != null ? s.getEvidenzeMultimediali().getDescrizione() : null)
                 .isAnonimo(s.getIdentita().getIsAnonimo())
                 .nome(s.getIdentita().getNome())

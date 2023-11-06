@@ -69,9 +69,9 @@ public class Segnalazione {
     //@Column(name = "esito_segnalazione")
     private String esitoSegnalazione;
 
-    @Lob
-    //@Column(name = "copia_esposto")
-    private byte[] copiaEsposto;
+    @OneToOne
+    @JoinColumn(name = "fk_copia_esposto", referencedColumnName = "id")
+    private Allegato copiaEsposto;
 
     @OneToOne
     @JoinColumn(name = "fk_doc", referencedColumnName = "id")

@@ -1,9 +1,15 @@
 package com.whistleblowermanagerbe.controller;
 
+import com.whistleblowermanagerbe.dto.FascicoloDto;
 import com.whistleblowermanagerbe.service.GestioneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "private/gestione")
@@ -76,4 +82,75 @@ public class GestioneController {
     public ResponseEntity<?> cercaRichiestaSegnalazione(@PathVariable(name = "idSegnalazione") Integer idSegnalazione){
         return ResponseEntity.ok(gestioneService.cercaRichiesta(idSegnalazione));
     }
+
+    @PostMapping(value = "createFascicolo")
+    public ResponseEntity<?> createFascicolo(@RequestBody FascicoloDto f){
+        return ResponseEntity.ok(gestioneService.createFascicolo(f));
+    }
+
+    @PostMapping(value = "updateFascicolo")
+    public ResponseEntity<?> updateFascicolo(@RequestBody FascicoloDto f){
+        return ResponseEntity.ok(gestioneService.updateFascicolo(f));
+    }
+
+    @GetMapping(value = "addSegnalazioneInFascicolo/{idSegnalazione}/{idFascicolo}")
+    public ResponseEntity<?> addSegnalazioneInFascicolo(@PathVariable(name = "idSegnalazione") Integer idSegnalazione, @PathVariable(name = "idFascicolo") Integer idFascicolo){
+        try{
+            gestioneService.addSegnalazioneInFascicolo(idSegnalazione, idFascicolo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping(value = "getFascicoloById/{idFascicolo}")
+    public ResponseEntity<?> getFascicoloById(@PathVariable(name = "idFascicolo") Integer idFascicolo){
+        return ResponseEntity.ok(gestioneService.getFascicoloById(idFascicolo));
+    }
+
+    @GetMapping(value = "getAllFascicoli")
+    public ResponseEntity<?> getAllFascicoli(){
+        return ResponseEntity.ok(gestioneService.getAllFascicoli());
+    }
+
+    @GetMapping(value = "getSegnalazioniByFascicolo/{idFascicolo}")
+    public ResponseEntity<?> getSegnalazioniByFascicolo(@PathVariable(name = "idFascicolo") Integer idFascicolo){
+        return ResponseEntity.ok(gestioneService.getSegnalazioniByFascicolo(idFascicolo));
+    }
+
+    @GetMapping(value = "getFascicoloBySegnalazione/{idSegnalazione}")
+    public ResponseEntity<?> getFascicoloBySegnalazione(@PathVariable(name = "idSegnalazione") Integer idInfo){
+        return ResponseEntity.ok(gestioneService.getFascicoloBySegnalazioneId(idInfo));
+    }
+
+    @GetMapping(value = "getInfoSegnalazioneById/{idInfo}")
+    public ResponseEntity<?> getInfoSegnalazioneById(@PathVariable(name = "idInfo") Integer idInfo){
+        return ResponseEntity.ok(gestioneService.getInfoById(idInfo));
+    }
+
+    @GetMapping("downloadAllegato/{id}")
+    public ResponseEntity<byte[]> downloadAllegato(@PathVariable(name = "id") Integer id, HttpServletResponse response) {
+
+        try {
+            byte[] contents = gestioneService.downloadAllegato(id);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            //headers.setContentType(MediaType.APPLICATION_XML);
+            String filename = "allegato.pdf";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping(value = "getAllegatiByInfo/{idInfo}")
+    public ResponseEntity<?> getAllegatiByInfo(@PathVariable(name = "idInfo") Integer idInfo){
+        return ResponseEntity.ok(gestioneService.getAllegatiByInfo(idInfo));
+    }
+
 }

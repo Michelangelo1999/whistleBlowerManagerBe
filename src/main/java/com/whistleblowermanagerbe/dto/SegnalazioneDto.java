@@ -49,11 +49,14 @@ public class SegnalazioneDto {
     private String estremiRegistrazione;
     private String dialogoParticolare;
     private String esitoSegnalazione;
+    private Integer idCopiaEsposto;
     private String copiaEsposto;
 
     private String evidenzeDoc;
+    private Integer idEvidenzeDoc;
     private String descrizioneEvidenzeDoc;
     private String evidenzeMultimediali;
+    private Integer idEvidenzeMultim;
     private String descrizioneEvidenzeMultim;
     private Boolean isAnonimo;
 
