@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping(value = "private/gestione")
@@ -95,6 +96,7 @@ public class GestioneController {
         return ResponseEntity.ok(gestioneService.updateFascicolo(f));
     }
 
+    @Transactional
     @GetMapping(value = "addSegnalazioneInFascicolo/{idSegnalazione}/{idFascicolo}")
     public ResponseEntity<?> addSegnalazioneInFascicolo(@PathVariable(name = "idSegnalazione") Integer idSegnalazione, @PathVariable(name = "idFascicolo") Integer idFascicolo){
         try{

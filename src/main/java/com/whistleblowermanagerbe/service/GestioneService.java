@@ -192,11 +192,11 @@ public class GestioneService {
 
     public FascicoloDto updateFascicolo(FascicoloDto in){
         Fascicolo f = fascicoloRepository.findById(in.getId()).get();
-        f.setDescrizione(f.getDescrizione());
-        f.setFondatezza(f.getFondatezza());
-        f.setStato(f.getStato());
-        f.setTipologia(f.getTipologia());
-        f.setAreaInteressata(f.getAreaInteressata());
+        f.setDescrizione(in.getDescrizione());
+        f.setFondatezza(in.getFondatezza());
+        f.setStato(in.getStato());
+        f.setTipologia(in.getTipologia());
+        f.setAreaInteressata(in.getAreaInteressata());
         return convert(fascicoloRepository.save(f));
     }
 

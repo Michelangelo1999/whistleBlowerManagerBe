@@ -17,7 +17,7 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
 
     @Query(value = "select * from info_segnalazione where fk_istruttore is null", nativeQuery = true)
     List<InfoSegnalazione> findAllNonAssegnate();
-    @Query(value = "alter table info_segnalazione set fk_fascicolo = :idFascicolo where id = :idSegnalazione", nativeQuery = true)
+    @Query(value = "update info_segnalazione set fk_fascicolo = :idFascicolo where id = :idSegnalazione", nativeQuery = true)
     @Modifying
     void addSegnalazioneInFascicolo(Integer idFascicolo, Integer idSegnalazione);
 

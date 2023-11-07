@@ -21,11 +21,11 @@ public interface UtenteRepository extends JpaRepository<Utente, Integer> {
     @Query(value = "select count(u.id) from utente u join ruolo_utente ru on u.id = ru.fk_utente join ruolo r on r.id = ru.fk_ruolo where r.ruolo = :ruolo", nativeQuery = true)
     Integer countUser(String ruolo);
 
-    @Query(value = "alter table utente set abilitato = :abilitato where id = :idUtente", nativeQuery = true)
+    @Query(value = "update utente set abilitato = :abilitato where id = :idUtente", nativeQuery = true)
     @Modifying
     void abilitaUtente(Integer idUtente, Boolean abilitato);
 
-    @Query(value = "alter table utente set cancellato = true where id = :idUtente", nativeQuery = true)
+    @Query(value = "update utente set cancellato = true where id = :idUtente", nativeQuery = true)
     @Modifying
     void eliminaUtente(Integer idUtente);
 
