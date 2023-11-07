@@ -11,6 +11,10 @@ import com.whistleblowermanagerbe.utils.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UtenteService {
+public class UtenteService implements UserDetailsService {
 
     @Autowired
     private UtenteRepository utenteRepository;
@@ -237,5 +241,14 @@ public class UtenteService {
         out.setLuogoNascita("Marcianhattan");
         out.setDataNascita(LocalDate.parse("26-05-1999", Utility.FORMATTER));
         return dur.save(out);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Utente userEntity = utenteRepository.findByNomeUtente(username).get();
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        return new User(userEntity.getNomeUtente(), userEntity.getPassword(), new ArrayList<>());
     }
 }
