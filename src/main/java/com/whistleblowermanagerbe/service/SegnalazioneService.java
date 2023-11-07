@@ -105,7 +105,7 @@ public class SegnalazioneService {
 
         try {
             s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
-            s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeDoc()));
+            s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeMultim()));
         } catch (Exception e){
             e.printStackTrace();
         }

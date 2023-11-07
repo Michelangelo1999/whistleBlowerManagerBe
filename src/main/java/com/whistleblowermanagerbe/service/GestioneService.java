@@ -88,7 +88,7 @@ public class GestioneService {
         dto.setInfoSegnalazione(model.getInfoSegnalazione().getId());
         dto.setId(model.getId());
         for(Messaggio m : model.getMessaggi()){
-            dto.getMessaggi().add(new MessaggioDto(m.getId(),m.getIdWriter(), m.getMessaggio(), m.getAllegato().getId(), null));
+            dto.getMessaggi().add(new MessaggioDto(m.getId(),m.getIdWriter(), m.getMessaggio(), m.getAllegato() != null ? m.getAllegato().getId() : null, null));
         }
         return dto;
     }
@@ -103,6 +103,7 @@ public class GestioneService {
             chatRepository.save(chat);
         } else {
             ChatAsincrona chat = new ChatAsincrona();
+            chat.setInfoSegnalazione(infoSegnalazioneRepository.findById(idInfoSegnalazione).get());
             chat.setMessaggi(new ArrayList<>());
             chat.getMessaggi().add(convert(messaggio, idUtente, idInfoSegnalazione));
             chatRepository.save(chat);

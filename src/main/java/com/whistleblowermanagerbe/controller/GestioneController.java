@@ -86,7 +86,8 @@ public class GestioneController {
 
     @PostMapping(value = "createFascicolo")
     public ResponseEntity<?> createFascicolo(@RequestBody FascicoloDto f){
-        return ResponseEntity.ok(gestioneService.createFascicolo(f));
+        FascicoloDto out = gestioneService.createFascicolo(f);
+        return ResponseEntity.ok(out);
     }
 
     @PostMapping(value = "updateFascicolo")
