@@ -73,11 +73,25 @@ public class GestioneService {
         infoSegnalazioneRepository.save(i);
     }
 
-    public ChatAsincrona getChat(Integer idInfoSegnalazione){
+    public ChatAsincronaDto getChat(Integer idInfoSegnalazione){
         Optional<ChatAsincrona> chatOpt =  chatRepository.findByInfoSegnalazione(idInfoSegnalazione);
-        return chatOpt.orElse(null);
+        if(chatOpt.isPresent()){
+            return convert(chatOpt.get());
+        } else {
+            return null;
+        }
     }
 
+    private ChatAsincronaDto convert(ChatAsincrona model){
+        ChatAsincronaDto dto = new ChatAsincronaDto();
+        dto.setMessaggi(new ArrayList<>());
+        dto.setInfoSegnalazione(model.getInfoSegnalazione().getId());
+        dto.setId(model.getId());
+        for(Messaggio m : model.getMessaggi()){
+            dto.getMessaggi().add(new MessaggioDto(m.getId(),m.getIdWriter(), m.getMessaggio(), m.getAllegato().getId(), null));
+        }
+        return dto;
+    }
     public void addMessage(Integer idInfoSegnalazione, Integer idUtente, MessaggioDto messaggio){
         Optional<ChatAsincrona> chatOpt =  chatRepository.findByInfoSegnalazione(idInfoSegnalazione);
         if (chatOpt.isPresent()){
