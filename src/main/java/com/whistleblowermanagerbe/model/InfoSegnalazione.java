@@ -27,8 +27,7 @@ public class InfoSegnalazione {
     private LocalDate ultimoAggiornamento;
 
     private String stato;
-    @OneToMany
-    @JoinColumn(name = "fk_info_segnalazione")
+    @OneToMany(mappedBy = "infoSegnalazioneAllegato")
     private List<Allegato> fileAllegati;
     @Column(name = "identita_fornita")
     private Boolean identitaFornita;

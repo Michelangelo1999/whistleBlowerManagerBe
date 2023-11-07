@@ -1,6 +1,7 @@
 package com.whistleblowermanagerbe.controller;
 
 import com.whistleblowermanagerbe.dto.FascicoloDto;
+import com.whistleblowermanagerbe.dto.MessaggioDto;
 import com.whistleblowermanagerbe.service.GestioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -153,4 +154,19 @@ public class GestioneController {
         return ResponseEntity.ok(gestioneService.getAllegatiByInfo(idInfo));
     }
 
+    @GetMapping(value = "getChat/{idInfo}")
+    public ResponseEntity<?> getChat(@PathVariable(name = "idInfo") Integer idInfo){
+        return ResponseEntity.ok(gestioneService.getChat(idInfo));
+    }
+
+    @PostMapping(value = "addMessage/{idInfo}/{idUtente}")
+    public ResponseEntity<?> addMessage(@PathVariable(name = "idInfo") Integer idInfo, @PathVariable(name = "idUtente") Integer idUtente, @RequestBody MessaggioDto messaggioDto){
+        try{
+            gestioneService.addMessage(idInfo, idUtente, messaggioDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

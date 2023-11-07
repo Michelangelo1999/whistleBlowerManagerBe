@@ -16,4 +16,8 @@ public class Allegato {
     @Lob
     private String descrizione;
 
+    @ManyToOne()
+    @JoinColumn(name = "fk_info_segnalazione")
+    private InfoSegnalazione infoSegnalazioneAllegato;
+
 }

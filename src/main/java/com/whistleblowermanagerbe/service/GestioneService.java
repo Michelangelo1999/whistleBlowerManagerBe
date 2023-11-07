@@ -85,20 +85,20 @@ public class GestioneService {
             if(chat.getMessaggi() == null){
                 chat.setMessaggi(new ArrayList<>());
             }
-            chat.getMessaggi().add(convert(messaggio, idUtente));
+            chat.getMessaggi().add(convert(messaggio, idUtente, idInfoSegnalazione));
             chatRepository.save(chat);
         } else {
             ChatAsincrona chat = new ChatAsincrona();
             chat.setMessaggi(new ArrayList<>());
-            chat.getMessaggi().add(convert(messaggio, idUtente));
+            chat.getMessaggi().add(convert(messaggio, idUtente, idInfoSegnalazione));
             chatRepository.save(chat);
         }
     }
 
-    private Messaggio convert(MessaggioDto dto, Integer idUtente){
+    private Messaggio convert(MessaggioDto dto, Integer idUtente, Integer idInfo){
         Messaggio m = new Messaggio();
         if(dto.getAllegato() != null){
-            Allegato a = createAllegatoChat(dto.getAllegato());
+            Allegato a = createAllegatoChat(dto.getAllegato(), idInfo);
             m.setAllegato(a);
         }
         m.setDataOra(LocalDateTime.now());
@@ -107,10 +107,11 @@ public class GestioneService {
         return m;
     }
 
-    private Allegato createAllegatoChat(String allegato){
+    private Allegato createAllegatoChat(String allegato, Integer idInfo){
         Allegato a = new Allegato();
         a.setDescrizione("Allegato chat");
         a.setAllegato(Base64.getDecoder().decode(allegato));
+        a.setInfoSegnalazioneAllegato(infoSegnalazioneRepository.findById(idInfo).get());
         return allegatoRepository.save(a);
     }
 
