@@ -71,6 +71,7 @@ public class SegnalazioneDto {
     private String telefono;
     private String email;
     private String mansione;
+    private Integer idInfo;
 
     private Boolean accettaTermini;
 }

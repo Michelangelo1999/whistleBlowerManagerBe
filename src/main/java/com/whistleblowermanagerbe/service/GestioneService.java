@@ -43,6 +43,9 @@ public class GestioneService {
     private UtenteRepository utenteRepository;
 
     @Autowired
+    private CommentoRepository commentoRepository;
+
+    @Autowired
     private AllegatoRepository allegatoRepository;
 
     public RichiestaIdentita addRichiestaIdentita(Integer idSegnalazione, String messaggio){
@@ -260,8 +263,22 @@ public class GestioneService {
         List<Allegato> modelList = allegatoRepository.findAllByInfoId(idInfo);
         List<AllegatoDto> out = new ArrayList<>();
         for(Allegato a : modelList){
-            out.add(new AllegatoDto(a.getId(), a.getDescrizione()));
+            out.add(new AllegatoDto(a.getId(), a.getDescrizione(), null));
         }
         return out;
     }
+
+    public Commento addCommento(Commento c, Integer idInfo){
+        c.setFkInfoSegnalazione(infoSegnalazioneRepository.findById(idInfo).get());
+        return commentoRepository.save(c);
+    }
+
+    public void addAllegato(AllegatoDto dto, Integer idInfo){
+        Allegato a = new Allegato();
+        a.setAllegato(Base64.getDecoder().decode(dto.getAllegato()));
+        a.setInfoSegnalazioneAllegato(infoSegnalazioneRepository.findById(idInfo).get());
+        a.setDescrizione(dto.getDescrizione());
+        allegatoRepository.save(a);
+    }
+
 }

@@ -8,4 +8,5 @@ import lombok.Data;
 public class AllegatoDto {
     private Integer id;
     private String descrizione;
+    private String allegato;
 }

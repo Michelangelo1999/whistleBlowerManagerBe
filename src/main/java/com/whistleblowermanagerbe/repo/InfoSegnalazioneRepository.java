@@ -12,15 +12,17 @@ import java.util.List;
 @Repository
 public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazione, Integer> {
 
-    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato != 'ARCHIVIATA' order by data_creazione asc", nativeQuery = true)
     List<InfoSegnalazione> findAllAssegnate(Integer idIstruttore);
 
-    @Query(value = "select * from info_segnalazione where fk_istruttore is null", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where fk_istruttore is null and stato != 'ARCHIVIATA' ", nativeQuery = true)
     List<InfoSegnalazione> findAllNonAssegnate();
     @Query(value = "update info_segnalazione set fk_fascicolo = :idFascicolo where id = :idSegnalazione", nativeQuery = true)
     @Modifying
     void addSegnalazioneInFascicolo(Integer idFascicolo, Integer idSegnalazione);
 
-    @Query(value = "select * from info_segnalazione where fk_fascicolo = :idFascicolo", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where fk_fascicolo = :idFascicolo and stato != 'ARCHIVIATA'", nativeQuery = true)
     List<InfoSegnalazione> findAllByFascicolo(Integer idFascicolo);
+    @Query(value = "select * from info_segnalazione where fk_segnalazione = (select id from segnalazione where id = :idSegnalazione)", nativeQuery = true)
+    InfoSegnalazione findByIdSegnalazione(Integer idSegnalazione);
 }

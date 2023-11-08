@@ -1,5 +1,6 @@
 package com.whistleblowermanagerbe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Allegato {
 
     @ManyToOne()
     @JoinColumn(name = "fk_info_segnalazione")
+    @JsonIgnore
     private InfoSegnalazione infoSegnalazioneAllegato;
 
 }

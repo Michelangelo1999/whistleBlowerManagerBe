@@ -36,8 +36,7 @@ public class InfoSegnalazione {
     private Boolean identitaVerificata;
     @Column(name = "oggetto_segnalazione")
     private String oggettoSegnalazione;
-    @OneToMany
-    @JoinColumn(name = "fk_info_segnalazione")
+    @OneToMany(mappedBy = "fkInfoSegnalazione")
     private List<Commento> commenti;
 
     @Transient

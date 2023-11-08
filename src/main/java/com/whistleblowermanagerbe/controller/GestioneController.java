@@ -1,7 +1,9 @@
 package com.whistleblowermanagerbe.controller;
 
+import com.whistleblowermanagerbe.dto.AllegatoDto;
 import com.whistleblowermanagerbe.dto.FascicoloDto;
 import com.whistleblowermanagerbe.dto.MessaggioDto;
+import com.whistleblowermanagerbe.model.Commento;
 import com.whistleblowermanagerbe.service.GestioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -172,4 +174,27 @@ public class GestioneController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PostMapping(value = "addCommento/{idInfo}")
+    public ResponseEntity<?> addCommento(@RequestBody Commento c, @PathVariable(name = "idInfo") Integer idInfo){
+        try{
+            Commento com = gestioneService.addCommento(c, idInfo);
+            return ResponseEntity.ok(com);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(value = "addAllegato/{idInfo}")
+    public ResponseEntity<?> addAllegato(@RequestBody AllegatoDto a, @PathVariable(name = "idInfo") Integer idInfo){
+        try{
+            gestioneService.addAllegato(a, idInfo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

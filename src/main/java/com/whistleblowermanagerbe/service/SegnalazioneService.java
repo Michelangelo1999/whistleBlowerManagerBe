@@ -241,6 +241,7 @@ public class SegnalazioneService {
                 .email(s.getIdentita().getEmail())
                 .mansione(s.getIdentita().getMansione())
                 .accettaTermini(s.getAccettaTermini())
+                .idInfo(infoSegnalazioneRepository.findByIdSegnalazione(s.getId()).getId())
                 .build();
     }
 }
