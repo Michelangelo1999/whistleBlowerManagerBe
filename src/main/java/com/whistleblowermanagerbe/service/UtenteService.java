@@ -174,9 +174,9 @@ public class UtenteService implements UserDetailsService {
         ruoloUtenteRepository.save(ponte2);
 
         Utente segnalante = new Utente();
-        supervisore.setNomeUtente("segnalante");
-        supervisore.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
-        supervisore.setAbilitato(true);
+        segnalante.setNomeUtente("segnalante");
+        segnalante.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
+        segnalante.setAbilitato(true);
         utenteRepository.save(segnalante);
     }
 
