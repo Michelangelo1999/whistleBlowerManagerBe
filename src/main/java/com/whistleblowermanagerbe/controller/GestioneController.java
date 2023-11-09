@@ -120,6 +120,16 @@ public class GestioneController {
         return ResponseEntity.ok(gestioneService.getAllFascicoli());
     }
 
+    @GetMapping(value = "getAllSegnalazioniArchiviate")
+    public ResponseEntity<?> getAllSegnalazioniArchiviate(){
+        return ResponseEntity.ok(gestioneService.getAllSegnalazioniArchiviate());
+    }
+
+    @GetMapping(value = "getAllSegnalazioniInoltrate")
+    public ResponseEntity<?> getAllSegnalazioniInoltrate(){
+        return ResponseEntity.ok(gestioneService.getAllSegnalazioniInoltrate());
+    }
+
     @GetMapping(value = "getSegnalazioniByFascicolo/{idFascicolo}")
     public ResponseEntity<?> getSegnalazioniByFascicolo(@PathVariable(name = "idFascicolo") Integer idFascicolo){
         return ResponseEntity.ok(gestioneService.getSegnalazioniByFascicolo(idFascicolo));

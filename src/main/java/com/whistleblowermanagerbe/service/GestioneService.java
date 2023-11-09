@@ -145,11 +145,17 @@ public class GestioneService {
     }
 
     public List<InfoSegnalazione> getAllSegnalazioniNonAssegnate(){
-        return infoSegnalazioneRepository.findAllNonAssegnate();
+        return setScadenza(infoSegnalazioneRepository.findAllNonAssegnate());
     }
 
     public List<InfoSegnalazione> getAllSegnalazioni(){
         return infoSegnalazioneRepository.findAll();
+    }
+    public List<InfoSegnalazione> getAllSegnalazioniArchiviate(){
+        return infoSegnalazioneRepository.findAllArchiviate();
+    }
+    public List<InfoSegnalazione> getAllSegnalazioniInoltrate(){
+        return infoSegnalazioneRepository.findAllInoltrateAdAutorita();
     }
 
     public List<InfoSegnalazione> getAllSegnalazioni(Integer idIstruttore){
@@ -251,6 +257,14 @@ public class GestioneService {
         int giorniTrascorsi = (int)ChronoUnit.DAYS.between(is.getDataCreazione(), LocalDate.now());
         is.setGiorniAllaScadenza(giorniTrascorsi <= 7 ? 7-giorniTrascorsi : 0);
         return is;
+    }
+
+    private List<InfoSegnalazione> setScadenza(List<InfoSegnalazione> infoList){
+        for(InfoSegnalazione is : infoList) {
+            int giorniTrascorsi = (int) ChronoUnit.DAYS.between(is.getDataCreazione(), LocalDate.now());
+            is.setGiorniAllaScadenza(giorniTrascorsi <= 7 ? 7 - giorniTrascorsi : 0);
+        }
+        return infoList;
     }
 
     public byte[] downloadAllegato(Integer id) throws IOException {

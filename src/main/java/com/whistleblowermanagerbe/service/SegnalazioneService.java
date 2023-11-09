@@ -62,6 +62,7 @@ public class SegnalazioneService {
         infoSegnalazione.setIdentitaFornita(!s.getIdentita().getIsAnonimo());
         infoSegnalazione.setIdentitaVerificata(false);
         infoSegnalazione.setStato(StatoSegnalazione.NON_ANCORA_PRESA_IN_CARICO.name());
+        infoSegnalazione.setNovantesimi(0);
         infoSegnalazioneRepository.save(infoSegnalazione);
     }
 
@@ -111,7 +112,8 @@ public class SegnalazioneService {
         }
 
         s.setIdentita(buildDatiUtente(dto));
-
+        s.setNovantesimi(0);
+        s.setStato(StatoSegnalazione.NON_ANCORA_PRESA_IN_CARICO.name());
         s.setAccettaTermini(dto.getAccettaTermini());
 
         return s;
@@ -243,5 +245,37 @@ public class SegnalazioneService {
                 .accettaTermini(s.getAccettaTermini())
                 .idInfo(infoSegnalazioneRepository.findByIdSegnalazione(s.getId()).getId())
                 .build();
+    }
+
+    public void gestisciSegnalazioniGiornalmente(){
+        List<Segnalazione> segnalazioneList = segnalazioneRepository.findAll();
+        for(Segnalazione s : segnalazioneList){
+            if(s.getStato().equalsIgnoreCase(StatoSegnalazione.PRESA_IN_CARICO.name()) || s.getStato().equalsIgnoreCase(StatoSegnalazione.IN_ISTRUTTORIA.name())){
+                if(s.getNovantesimi() != null){
+                    s.setNovantesimi(s.getNovantesimi() + 1);
+                } else {
+                    s.setNovantesimi(0);
+                }
+                if(s.getNovantesimi() == 90){
+                    s.setStato(StatoSegnalazione.ARCHIVIATA.name());
+                }
+                segnalazioneRepository.save(s);
+            }
+        }
+
+        List<InfoSegnalazione> infoSegnalazioneList = infoSegnalazioneRepository.findAll();
+        for(InfoSegnalazione is : infoSegnalazioneList){
+            if(is.getStato().equalsIgnoreCase(StatoSegnalazione.PRESA_IN_CARICO.name()) || is.getStato().equalsIgnoreCase(StatoSegnalazione.IN_ISTRUTTORIA.name())){
+                if(is.getNovantesimi() != null){
+                    is.setNovantesimi(is.getNovantesimi() + 1);
+                } else {
+                    is.setNovantesimi(0);
+                }
+                if(is.getNovantesimi() == 90){
+                    is.setStato(StatoSegnalazione.ARCHIVIATA.name());
+                }
+                infoSegnalazioneRepository.save(is);
+            }
+        }
     }
 }
