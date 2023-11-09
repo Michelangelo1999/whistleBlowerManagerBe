@@ -41,6 +41,7 @@ public class PublicController {
         } catch (BadCredentialsException e) {
             e.printStackTrace();
         }
+
          */
 
         final UserDetails userDetails = utenteService.loadUserByUsername(authenticationRequest.getNomeUtente());

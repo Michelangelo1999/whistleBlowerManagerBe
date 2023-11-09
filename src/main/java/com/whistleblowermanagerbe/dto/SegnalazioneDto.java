@@ -74,4 +74,6 @@ public class SegnalazioneDto {
     private Integer idInfo;
 
     private Boolean accettaTermini;
+
+    private String token;
 }

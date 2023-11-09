@@ -68,13 +68,23 @@ public class GestioneService {
         InfoSegnalazione i = infoSegnalazioneRepository.findById(idSegnalazione).get();
         i.setAssegnatario(utenteRepository.findById(idUtente).get());
         i.setStato(StatoSegnalazione.PRESA_IN_CARICO.name());
+        i.setNovantesimi(1);
         infoSegnalazioneRepository.save(i);
+
+        Segnalazione s = segnalazioneRepository.findById(i.getSegnalazione().getId()).get();
+        s.setStato(StatoSegnalazione.PRESA_IN_CARICO.name());
+        s.setNovantesimi(1);
+        segnalazioneRepository.save(s);
     }
 
     public void changeStato(Integer idInfoSegnalazione, String nuovoStato){
         InfoSegnalazione i = infoSegnalazioneRepository.findById(idInfoSegnalazione).get();
         i.setStato(nuovoStato);
         infoSegnalazioneRepository.save(i);
+
+        Segnalazione s = segnalazioneRepository.findById(i.getSegnalazione().getId()).get();
+        s.setStato(nuovoStato);
+        segnalazioneRepository.save(s);
     }
 
     public ChatAsincronaDto getChat(Integer idInfoSegnalazione){
@@ -239,7 +249,7 @@ public class GestioneService {
     public InfoSegnalazione getInfoById(Integer id){
         InfoSegnalazione is = infoSegnalazioneRepository.findById(id).get();
         int giorniTrascorsi = (int)ChronoUnit.DAYS.between(is.getDataCreazione(), LocalDate.now());
-        is.setGiorniAllaScadenza(giorniTrascorsi <= 10 ? 10-giorniTrascorsi : 0);
+        is.setGiorniAllaScadenza(giorniTrascorsi <= 7 ? 7-giorniTrascorsi : 0);
         return is;
     }
 

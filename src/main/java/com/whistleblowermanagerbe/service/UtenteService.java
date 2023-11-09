@@ -251,4 +251,9 @@ public class UtenteService implements UserDetailsService {
         }
         return new User(userEntity.getNomeUtente(), userEntity.getPassword(), new ArrayList<>());
     }
+
+    public UserDetails loadUserByKey(String key) throws UsernameNotFoundException {
+
+        return new User("segnalante", "key", new ArrayList<>());
+    }
 }

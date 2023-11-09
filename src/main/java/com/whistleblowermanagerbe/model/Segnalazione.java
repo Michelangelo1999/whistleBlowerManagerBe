@@ -17,6 +17,9 @@ public class Segnalazione {
     @Column(name = "key_16")
     private String key16;
 
+    private String stato;
+    private Integer novantesimi;
+
     //sezione 1
     @Column(name = "ruolo_segnalante")
     private String ruoloSegnalante;

@@ -39,6 +39,7 @@ public class InfoSegnalazione {
     @OneToMany(mappedBy = "fkInfoSegnalazione")
     private List<Commento> commenti;
 
+    private Integer novantesimi;
     @Transient
     private Integer giorniAllaScadenza;
 }

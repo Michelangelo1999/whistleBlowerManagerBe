@@ -196,5 +196,4 @@ public class GestioneController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 }
