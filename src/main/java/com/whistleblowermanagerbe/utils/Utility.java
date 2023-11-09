@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class Utility {
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static final DateTimeFormatter FORMATTER_ORA = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public static String listToString(List<String> listItem){

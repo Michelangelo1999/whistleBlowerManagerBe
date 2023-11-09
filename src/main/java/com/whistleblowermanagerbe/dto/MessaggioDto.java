@@ -18,4 +18,5 @@ public class MessaggioDto {
     private String messaggio;
     private Integer idAllegato;
     private String allegato;
+    private String data;
 }

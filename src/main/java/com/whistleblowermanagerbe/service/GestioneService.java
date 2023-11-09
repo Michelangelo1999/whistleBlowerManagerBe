@@ -5,6 +5,7 @@ import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
 import com.whistleblowermanagerbe.dto.*;
 import com.whistleblowermanagerbe.model.*;
 import com.whistleblowermanagerbe.repo.*;
+import com.whistleblowermanagerbe.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,7 +92,7 @@ public class GestioneService {
         dto.setInfoSegnalazione(model.getInfoSegnalazione().getId());
         dto.setId(model.getId());
         for(Messaggio m : model.getMessaggi()){
-            dto.getMessaggi().add(new MessaggioDto(m.getId(),m.getIdWriter(), m.getMessaggio(), m.getAllegato() != null ? m.getAllegato().getId() : null, null));
+            dto.getMessaggi().add(new MessaggioDto(m.getId(),m.getIdWriter(), m.getMessaggio(), m.getAllegato() != null ? m.getAllegato().getId() : null, null, m.getDataOra() != null ? m.getDataOra().format(Utility.FORMATTER_ORA) : null));
         }
         return dto;
     }
