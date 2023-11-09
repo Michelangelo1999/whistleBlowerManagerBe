@@ -37,15 +37,12 @@ public class SegnalazioneController {
         }
     }
 
-    @PostMapping(value = "getSegnalazione/{richiediToken}")
-    public ResponseEntity<?> getSegnalazione(@RequestBody String key16, @PathVariable(name = "richiediToken") Boolean richiediToken){
+    @PostMapping(value = "getSegnalazione")
+    public ResponseEntity<?> getSegnalazione(@RequestBody String key16){
 
         try {
             SegnalazioneDto out = service.getSegnalazioneByKey(key16);
-            if(richiediToken){
-                final UserDetails userDetails = utenteService.loadUserByKey(key16);
-                out.setToken(jwtUtil.generateToken(userDetails));
-            }
+
             return ResponseEntity.ok(out);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

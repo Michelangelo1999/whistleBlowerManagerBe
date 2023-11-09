@@ -172,6 +172,12 @@ public class UtenteService implements UserDetailsService {
         supervisore = utenteRepository.save(supervisore);
         RuoloUtente ponte2 = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name()).get(), supervisore);
         ruoloUtenteRepository.save(ponte2);
+
+        Utente segnalante = new Utente();
+        supervisore.setNomeUtente("segnalante");
+        supervisore.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
+        supervisore.setAbilitato(true);
+        utenteRepository.save(segnalante);
     }
 
     private void creaSegnalazioni(){
@@ -252,8 +258,4 @@ public class UtenteService implements UserDetailsService {
         return new User(userEntity.getNomeUtente(), userEntity.getPassword(), new ArrayList<>());
     }
 
-    public UserDetails loadUserByKey(String key) throws UsernameNotFoundException {
-
-        return new User("segnalante", "key", new ArrayList<>());
-    }
 }

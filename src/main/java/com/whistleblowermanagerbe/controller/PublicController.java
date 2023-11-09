@@ -1,6 +1,10 @@
 package com.whistleblowermanagerbe.controller;
 
 import com.whistleblowermanagerbe.dto.LoginRequest;
+import com.whistleblowermanagerbe.dto.SegnalazioneDto;
+import com.whistleblowermanagerbe.model.Segnalazione;
+import com.whistleblowermanagerbe.repo.SegnalazioneRepository;
+import com.whistleblowermanagerbe.service.SegnalazioneService;
 import com.whistleblowermanagerbe.service.UtenteService;
 import com.whistleblowermanagerbe.utils.AuthenticationResponse;
 import com.whistleblowermanagerbe.utils.JwtUtil;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(value = "public")
 public class PublicController {
@@ -25,6 +31,9 @@ public class PublicController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private SegnalazioneService segnalazioneService;
 
     @PostMapping(value = "login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
@@ -44,10 +53,24 @@ public class PublicController {
 
          */
 
-        final UserDetails userDetails = utenteService.loadUserByUsername(authenticationRequest.getNomeUtente());
-        final String token = jwtUtil.generateToken(userDetails);
+        if(authenticationRequest.getNomeUtente().equals("segnalante")){
+            try {
+                SegnalazioneDto dto = segnalazioneService.getSegnalazioneByKey(authenticationRequest.getKey());
 
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+                final UserDetails userDetails = utenteService.loadUserByUsername(authenticationRequest.getNomeUtente());
+                final String token = jwtUtil.generateToken(userDetails);
+
+                return ResponseEntity.ok(new AuthenticationResponse(token));
+            }catch (Exception e){
+                return ResponseEntity.badRequest().build();
+            }
+        } else {
+            final UserDetails userDetails = utenteService.loadUserByUsername(authenticationRequest.getNomeUtente());
+            final String token = jwtUtil.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthenticationResponse(token));
+        }
+
     }
 
 

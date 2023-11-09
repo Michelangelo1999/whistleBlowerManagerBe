@@ -7,4 +7,5 @@ public class LoginRequest {
 
     private String nomeUtente;
     private String password;
+    private String key;
 }
