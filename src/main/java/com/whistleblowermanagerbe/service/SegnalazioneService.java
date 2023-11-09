@@ -244,6 +244,8 @@ public class SegnalazioneService {
                 .mansione(s.getIdentita().getMansione())
                 .accettaTermini(s.getAccettaTermini())
                 .idInfo(infoSegnalazioneRepository.findByIdSegnalazione(s.getId()).getId())
+                .novantesimi(s.getNovantesimi())
+                .stato(s.getStato())
                 .build();
     }
 

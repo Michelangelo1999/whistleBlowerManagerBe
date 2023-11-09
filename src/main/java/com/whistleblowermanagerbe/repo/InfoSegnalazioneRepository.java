@@ -26,10 +26,10 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
     @Query(value = "select * from info_segnalazione where fk_segnalazione = (select id from segnalazione where id = :idSegnalazione)", nativeQuery = true)
     InfoSegnalazione findByIdSegnalazione(Integer idSegnalazione);
 
-    @Query(value = "select * from info_segnalazione where fk_istruttore is null and stato = 'ARCHIVIATA'", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where stato = 'ARCHIVIATA'", nativeQuery = true)
     List<InfoSegnalazione> findAllArchiviate();
 
-    @Query(value = "select * from info_segnalazione where fk_istruttore is null and stato = 'INOLTRATA_AD_AUTORITA'", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where stato = 'INOLTRATA_AD_AUTORITA'", nativeQuery = true)
     List<InfoSegnalazione> findAllInoltrateAdAutorita();
 
 }
