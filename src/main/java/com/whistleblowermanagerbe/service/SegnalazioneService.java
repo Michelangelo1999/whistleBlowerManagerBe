@@ -89,8 +89,9 @@ public class SegnalazioneService {
         s.setProcedimentoInAtto(dto.getProcedimentoInAtto());
         s.setConoscenzaProcedimento(dto.getConoscenzaProcedimento());
         s.setAutoritaRiferimento(dto.getAutoritaRiferimento());
+        s.setDataEffettuazioneSegnalazione(LocalDate.now());
         try {
-            s.setDataEffettuazioneSegnalazione(LocalDate.parse(dto.getDataEffettuazioneSegnalazione(), Utility.FORMATTER));
+            s.setDataAvvenimentoFatti(LocalDate.parse(dto.getDataAvvenimentoFatti(), Utility.FORMATTER));
         } catch (Exception e){
             e.printStackTrace();
         }
