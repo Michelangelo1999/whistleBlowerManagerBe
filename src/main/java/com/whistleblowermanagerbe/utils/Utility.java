@@ -21,7 +21,7 @@ public class Utility {
     }
 
     public static List<String> stringToList(String item){
-        return new ArrayList<>(Arrays.asList(item.split(" | ")));
+        return new ArrayList<>(Arrays.asList(item.split("\\|")));
     }
 
     public static String encryptPassword(String password) {

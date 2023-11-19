@@ -37,6 +37,11 @@ public class PublicController {
         return ResponseEntity.ok(utenteService.login(loginRequest));
     }
 
+    @GetMapping(value = "checkStatus")
+    public ResponseEntity<?> checkStatus(){
+        return ResponseEntity.ok("It works!");
+    }
+
     @PostMapping(value = "auth")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) {
         /*
