@@ -162,6 +162,14 @@ public class GestioneService {
         return infoSegnalazioneRepository.findAllAssegnate(idIstruttore);
     }
 
+    public List<InfoSegnalazione> getAllSegnalazioniArchiviate(Integer idIstruttore){
+        return infoSegnalazioneRepository.findAllAssegnateAndArchiviate(idIstruttore);
+    }
+
+    public List<InfoSegnalazione> getAllSegnalazioniInoltrate(Integer idIstruttore){
+        return infoSegnalazioneRepository.findAllAssegnateAndInoltrate(idIstruttore);
+    }
+
     public List<RichiestaIdentitaDto> findAllRichiesteId(){
         List<RichiestaIdentita> listaRichieste = richiestaIdentitaRepository.findAll();
         return convert(listaRichieste);

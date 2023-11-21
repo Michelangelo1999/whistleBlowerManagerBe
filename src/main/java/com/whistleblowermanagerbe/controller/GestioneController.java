@@ -32,6 +32,16 @@ public class GestioneController {
         return ResponseEntity.ok(gestioneService.getAllSegnalazioni(idIstruttore));
     }
 
+    @GetMapping(value = "getAllSegnalazioniArchiviate/{idIstruttore}")
+    public ResponseEntity<?> getAllSegnalazioniArchiviate(@PathVariable(name = "idIstruttore") Integer idIstruttore){
+        return ResponseEntity.ok(gestioneService.getAllSegnalazioniArchiviate(idIstruttore));
+    }
+
+    @GetMapping(value = "getAllSegnalazioniInoltrate/{idIstruttore}")
+    public ResponseEntity<?> getAllSegnalazioniInoltrate(@PathVariable(name = "idIstruttore") Integer idIstruttore){
+        return ResponseEntity.ok(gestioneService.getAllSegnalazioniInoltrate(idIstruttore));
+    }
+
     @GetMapping(value = "getAllSegnalazioniNonAssegnate")
     public ResponseEntity<?> getAllSegnalazioniNonAssegnate(){
         return ResponseEntity.ok(gestioneService.getAllSegnalazioniNonAssegnate());

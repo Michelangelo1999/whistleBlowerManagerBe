@@ -15,6 +15,12 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
     @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato != 'ARCHIVIATA' order by data_creazione asc", nativeQuery = true)
     List<InfoSegnalazione> findAllAssegnate(Integer idIstruttore);
 
+    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato = 'ARCHIVIATA' order by data_creazione asc", nativeQuery = true)
+    List<InfoSegnalazione> findAllAssegnateAndArchiviate(Integer idIstruttore);
+
+    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato = 'INOLTRATA_AD_AUTORITA' order by data_creazione asc", nativeQuery = true)
+    List<InfoSegnalazione> findAllAssegnateAndInoltrate(Integer idIstruttore);
+
     @Query(value = "select * from info_segnalazione where fk_istruttore is null and stato != 'ARCHIVIATA' and stato != 'INOLTRATA_AD_AUTORITA'", nativeQuery = true)
     List<InfoSegnalazione> findAllNonAssegnate();
     @Query(value = "update info_segnalazione set fk_fascicolo = :idFascicolo where id = :idSegnalazione", nativeQuery = true)
