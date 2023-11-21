@@ -150,6 +150,11 @@ public class UtenteService implements UserDetailsService {
                 //inserisco altri dati di test da rimuovere successivamente
                 //creaUtenti();
                 //creaSegnalazioni();
+                Utente segnalante = new Utente();
+                segnalante.setNomeUtente("segnalante");
+                segnalante.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
+                segnalante.setAbilitato(true);
+                utenteRepository.save(segnalante);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -173,11 +178,7 @@ public class UtenteService implements UserDetailsService {
         RuoloUtente ponte2 = new RuoloUtente(null, ruoloRepository.findByRuolo(com.whistleblowermanagerbe.Enum.Ruolo.SUPERVISORE.name()).get(), supervisore);
         ruoloUtenteRepository.save(ponte2);
 
-        Utente segnalante = new Utente();
-        segnalante.setNomeUtente("segnalante");
-        segnalante.setPassword(Utility.encryptPassword("whistleBlowerManager_2023!"));
-        segnalante.setAbilitato(true);
-        utenteRepository.save(segnalante);
+
     }
 
     private void creaSegnalazioni(){
