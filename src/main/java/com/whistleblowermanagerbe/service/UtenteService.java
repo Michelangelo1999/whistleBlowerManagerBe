@@ -148,8 +148,8 @@ public class UtenteService implements UserDetailsService {
                 ruoloUtenteRepository.save(ponte);
 
                 //inserisco altri dati di test da rimuovere successivamente
-                creaUtenti();
-                creaSegnalazioni();
+                //creaUtenti();
+                //creaSegnalazioni();
             }
         } catch (Exception e){
             e.printStackTrace();
