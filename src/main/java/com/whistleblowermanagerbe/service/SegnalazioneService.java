@@ -77,11 +77,6 @@ public class SegnalazioneService {
         s.setCitta(dto.getCitta());
 
         s.setTipologiaCondottaIllecita(Utility.listToString(dto.getTipologiaCondottaIllecita()));
-        try {
-            s.setDataAvvenimentoFatti(LocalDate.parse(dto.getDataAvvenimentoFatti(), Utility.FORMATTER));
-        } catch (Exception e){
-
-        }
         s.setFattiAncoraInCorso(dto.getFattiAncoraInCorso());
         s.setElencoSoggettiCoinvolti(convert(dto.getElencoSoggettiCoinvolti()));
         s.setDescrizioneFatti(dto.getDescrizioneFatti());
@@ -90,11 +85,9 @@ public class SegnalazioneService {
         s.setConoscenzaProcedimento(dto.getConoscenzaProcedimento());
         s.setAutoritaRiferimento(dto.getAutoritaRiferimento());
         s.setDataEffettuazioneSegnalazione(LocalDate.now());
-        try {
-            s.setDataAvvenimentoFatti(LocalDate.parse(dto.getDataAvvenimentoFatti(), Utility.FORMATTER));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+
+        s.setDataAvvenimentoFatti(dto.getDataAvvenimentoFatti());
+
         s.setEstremiRegistrazione(dto.getEstremiRegistrazione());
         s.setDialogoParticolare(dto.getDialogoParticolare());
         s.setEsitoSegnalazione(dto.getEsitoSegnalazione());
@@ -102,14 +95,14 @@ public class SegnalazioneService {
         try {
             s.setCopiaEsposto(addUpdateAllegato(dto.getCopiaEsposto(), "Copia Esposto"));
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         try {
             s.setEvidenzeDocumentali(addUpdateAllegato(dto.getEvidenzeDoc(), dto.getDescrizioneEvidenzeDoc()));
             s.setEvidenzeMultimediali(addUpdateAllegato(dto.getEvidenzeMultimediali(), dto.getDescrizioneEvidenzeMultim()));
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         s.setIdentita(buildDatiUtente(dto));
@@ -215,7 +208,7 @@ public class SegnalazioneService {
                 .indirizzoSede(s.getIndirizzoSede())
                 .citta(s.getCitta())
                 .tipologiaCondottaIllecita(Utility.stringToList(s.getTipologiaCondottaIllecita()))
-                .dataAvvenimentoFatti(Utility.getDataFormattata(s.getDataAvvenimentoFatti()))
+                .dataAvvenimentoFatti(s.getDataAvvenimentoFatti())
                 .fattiAncoraInCorso(s.getFattiAncoraInCorso())
                 .elencoSoggettiCoinvolti(convertModel(s.getElencoSoggettiCoinvolti()))
                 .descrizioneFatti(s.getDescrizioneFatti())

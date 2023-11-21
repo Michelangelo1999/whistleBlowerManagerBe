@@ -42,7 +42,7 @@ public class Segnalazione {
     private String tipologiaCondottaIllecita;
 
     //@Column(name = "data_avvenimento_fatti")
-    private LocalDate dataAvvenimentoFatti;
+    private String dataAvvenimentoFatti;
 
     //@Column(name = "fatti_ancora_in_corso")
     private Boolean fattiAncoraInCorso;
