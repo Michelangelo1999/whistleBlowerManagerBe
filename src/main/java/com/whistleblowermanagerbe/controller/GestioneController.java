@@ -37,6 +37,12 @@ public class GestioneController {
         return ResponseEntity.ok(gestioneService.getAllSegnalazioniArchiviate(idIstruttore));
     }
 
+    @GetMapping(value = "findAllNonFascicolate")
+    public ResponseEntity<?> getAllSegnalazioniNonFascicolate(){
+        return ResponseEntity.ok(gestioneService.getAllSegnalazioniNonFascicolate());
+    }
+
+
     @GetMapping(value = "getAllSegnalazioniInoltrate/{idIstruttore}")
     public ResponseEntity<?> getAllSegnalazioniInoltrate(@PathVariable(name = "idIstruttore") Integer idIstruttore){
         return ResponseEntity.ok(gestioneService.getAllSegnalazioniInoltrate(idIstruttore));
@@ -113,6 +119,18 @@ public class GestioneController {
     public ResponseEntity<?> addSegnalazioneInFascicolo(@PathVariable(name = "idSegnalazione") Integer idSegnalazione, @PathVariable(name = "idFascicolo") Integer idFascicolo){
         try{
             gestioneService.addSegnalazioneInFascicolo(idSegnalazione, idFascicolo);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @Transactional
+    @GetMapping(value = "removeSegnalazioneFromFascicolo/{idSegnalazione}")
+    public ResponseEntity<?> removeSegnalazioneFromFascicolo(@PathVariable(name = "idSegnalazione") Integer idSegnalazione){
+        try{
+            gestioneService.removeSegnalazioneFromFascicolo(idSegnalazione);
             return ResponseEntity.ok().build();
         } catch (Exception e){
             e.printStackTrace();

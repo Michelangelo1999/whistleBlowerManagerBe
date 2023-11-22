@@ -166,6 +166,10 @@ public class GestioneService {
         return infoSegnalazioneRepository.findAllAssegnateAndArchiviate(idIstruttore);
     }
 
+    public List<InfoSegnalazione> getAllSegnalazioniNonFascicolate(){
+        return infoSegnalazioneRepository.findAllNonFascicolate();
+    }
+
     public List<InfoSegnalazione> getAllSegnalazioniInoltrate(Integer idIstruttore){
         return infoSegnalazioneRepository.findAllAssegnateAndInoltrate(idIstruttore);
     }
@@ -230,6 +234,10 @@ public class GestioneService {
 
     public void addSegnalazioneInFascicolo(Integer idInfo, Integer idFascicolo){
         infoSegnalazioneRepository.addSegnalazioneInFascicolo(idFascicolo, idInfo);
+    }
+
+    public void removeSegnalazioneFromFascicolo(Integer idInfo){
+        infoSegnalazioneRepository.removeSegnalazioneFromFascicolo(idInfo);
     }
 
     public FascicoloDto getFascicoloById(Integer id){

@@ -27,6 +27,10 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
     @Modifying
     void addSegnalazioneInFascicolo(Integer idFascicolo, Integer idSegnalazione);
 
+    @Query(value = "update info_segnalazione set fk_fascicolo = null where id = :idSegnalazione", nativeQuery = true)
+    @Modifying
+    void removeSegnalazioneFromFascicolo(Integer idSegnalazione);
+
     @Query(value = "select * from info_segnalazione where fk_fascicolo = :idFascicolo and stato != 'ARCHIVIATA' and stato != 'INOLTRATA_AD_AUTORITA'", nativeQuery = true)
     List<InfoSegnalazione> findAllByFascicolo(Integer idFascicolo);
     @Query(value = "select * from info_segnalazione where fk_segnalazione = (select id from segnalazione where id = :idSegnalazione)", nativeQuery = true)
@@ -37,5 +41,8 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
 
     @Query(value = "select * from info_segnalazione where stato = 'INOLTRATA_AD_AUTORITA'", nativeQuery = true)
     List<InfoSegnalazione> findAllInoltrateAdAutorita();
+
+    @Query(value = "select * from info_segnalazione where fk_fascicolo is null", nativeQuery = true)
+    List<InfoSegnalazione> findAllNonFascicolate();
 
 }
