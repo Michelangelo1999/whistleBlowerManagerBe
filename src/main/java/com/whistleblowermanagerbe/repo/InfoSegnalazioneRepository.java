@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazione, Integer> {
 
-    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato != 'ARCHIVIATA' order by data_creazione asc", nativeQuery = true)
+    @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato != 'ARCHIVIATA' and stato != 'INOLTRATA_AD_AUTORITA' order by data_creazione asc", nativeQuery = true)
     List<InfoSegnalazione> findAllAssegnate(Integer idIstruttore);
 
     @Query(value = "select * from info_segnalazione where fk_istruttore = :idIstruttore and stato = 'ARCHIVIATA' order by data_creazione asc", nativeQuery = true)
