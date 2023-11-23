@@ -77,14 +77,18 @@ public class GestioneService {
         segnalazioneRepository.save(s);
     }
 
-    public void changeStato(Integer idInfoSegnalazione, String nuovoStato){
+    public void changeStato(Integer idInfoSegnalazione, String nuovoStato) throws Exception{
         InfoSegnalazione i = infoSegnalazioneRepository.findById(idInfoSegnalazione).get();
-        i.setStato(nuovoStato);
-        infoSegnalazioneRepository.save(i);
+        if((nuovoStato.equals(StatoSegnalazione.PRESA_IN_CARICO.name()) || nuovoStato.equals(StatoSegnalazione.IN_ISTRUTTORIA.name())) && i.getAssegnatario() == null){
+            throw new Exception("Non puoi settare questo stato senza prima averla assegnata");
+        } else {
+            i.setStato(nuovoStato);
+            infoSegnalazioneRepository.save(i);
 
-        Segnalazione s = segnalazioneRepository.findById(i.getSegnalazione().getId()).get();
-        s.setStato(nuovoStato);
-        segnalazioneRepository.save(s);
+            Segnalazione s = segnalazioneRepository.findById(i.getSegnalazione().getId()).get();
+            s.setStato(nuovoStato);
+            segnalazioneRepository.save(s);
+        }
     }
 
     public ChatAsincronaDto getChat(Integer idInfoSegnalazione){

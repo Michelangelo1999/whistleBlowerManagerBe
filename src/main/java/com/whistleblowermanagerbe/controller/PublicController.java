@@ -86,5 +86,15 @@ public class PublicController {
         }
     }
 
+    @GetMapping(value = "gestisciSegnalazioniSemestralmente")
+    public ResponseEntity<?> gestisciSegnalazioniSemestralmente(){
+        try{
+            segnalazioneService.gestisciSegnalazioniSemestralmente();
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 }

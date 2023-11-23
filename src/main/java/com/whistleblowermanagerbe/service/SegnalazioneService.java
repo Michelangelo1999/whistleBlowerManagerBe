@@ -4,10 +4,7 @@ import com.whistleblowermanagerbe.Enum.StatoSegnalazione;
 import com.whistleblowermanagerbe.dto.SegnalazioneDto;
 import com.whistleblowermanagerbe.dto.SoggettoCoinvoltoDto;
 import com.whistleblowermanagerbe.model.*;
-import com.whistleblowermanagerbe.repo.AllegatoRepository;
-import com.whistleblowermanagerbe.repo.DatiUtenteRepository;
-import com.whistleblowermanagerbe.repo.InfoSegnalazioneRepository;
-import com.whistleblowermanagerbe.repo.SegnalazioneRepository;
+import com.whistleblowermanagerbe.repo.*;
 import com.whistleblowermanagerbe.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +31,10 @@ public class SegnalazioneService {
 
     @Autowired
     private InfoSegnalazioneRepository infoSegnalazioneRepository;
+    @Autowired
+    private CommentoRepository commentoRepository;
+    @Autowired
+    private ChatRepository chatRepository;
 
     private String generateKey16(){
         SecureRandom random = new SecureRandom();
@@ -241,6 +242,48 @@ public class SegnalazioneService {
                 .novantesimi(s.getNovantesimi())
                 .stato(s.getStato())
                 .build();
+    }
+
+    public void gestisciSegnalazioniSemestralmente(){
+        List<InfoSegnalazione> oldestInfo = infoSegnalazioneRepository.findAllDaEliminare();
+        if(!oldestInfo.isEmpty()){
+            for(InfoSegnalazione is : oldestInfo){
+                Segnalazione s = segnalazioneRepository.findById(is.getSegnalazione().getId()).get();
+                Optional<Allegato> a1opt = allegatoRepository.findById(s.getEvidenzeDocumentali().getId());
+                Optional<Allegato> a2opt = allegatoRepository.findById(s.getEvidenzeMultimediali().getId());
+                Optional<Allegato> a3opt = allegatoRepository.findById(s.getCopiaEsposto().getId());
+                List<Allegato> allegatiInfo = is.getFileAllegati();
+                List<Commento> commentiInfo = is.getCommenti();
+                Optional<ChatAsincrona> chatOpt = chatRepository.findByInfoSegnalazione(is.getId());
+                DatiUtente du = datiUtenteRepository.findById(s.getIdentita().getId()).get();
+
+                s.setEvidenzeDocumentali(null);
+                s.setEvidenzeMultimediali(null);
+                s.setCopiaEsposto(null);
+
+                a1opt.ifPresent(allegato -> allegatoRepository.delete(allegato));
+                a2opt.ifPresent(allegato -> allegatoRepository.delete(allegato));
+                a3opt.ifPresent(allegato -> allegatoRepository.delete(allegato));
+
+                if(allegatiInfo != null && !allegatiInfo.isEmpty()){
+                    allegatoRepository.deleteAll(allegatiInfo);
+                }
+
+                if(commentiInfo != null && !commentiInfo.isEmpty()){
+                    commentoRepository.deleteAll(commentiInfo);
+                }
+
+                if(chatOpt.isPresent()){
+                    chatRepository.delete(chatOpt.get());
+                }
+
+                infoSegnalazioneRepository.delete(is);
+                segnalazioneRepository.delete(s);
+                datiUtenteRepository.delete(du);
+
+            }
+
+        }
     }
 
     public void gestisciSegnalazioniGiornalmente(){

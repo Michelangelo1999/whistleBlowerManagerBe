@@ -44,5 +44,7 @@ public interface InfoSegnalazioneRepository extends JpaRepository<InfoSegnalazio
 
     @Query(value = "select * from info_segnalazione where fk_fascicolo is null", nativeQuery = true)
     List<InfoSegnalazione> findAllNonFascicolate();
+    @Query(value = "select * from info_segnalazione where data_creazione < (date_sub(curdate(), interval 4 year))", nativeQuery = true)
+    List<InfoSegnalazione> findAllDaEliminare();
 
 }
